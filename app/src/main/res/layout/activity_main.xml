@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".MainActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/main_activity_mainpage_lottie"
+        android:layout_width="352dp"
+        android:layout_height="311dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/mainpage_lottie" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_activity_title"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/second_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Blooms"
+        android:textSize="38dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_mainpage_lottie" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_activity_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:text="Struggling to nurture your goals? \n Let us help you succeed"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@color/second_white"
+        android:textSize="14dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_title" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/main_activity_login_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/button_blue"
+        android:fontFamily="@font/poppins_medium"
+        android:letterSpacing="0"
+        android:padding="14dp"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="@color/second_white"
+        android:textSize="18dp"
+        app:cornerRadius="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_subtitle"
+        tools:ignore="SpUsage" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/main_activity_signup_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#00000000"
+        android:fontFamily="@font/poppins_medium"
+        android:letterSpacing="0"
+        android:padding="14dp"
+        android:text="@string/sign_up"
+        android:textAllCaps="false"
+        android:textColor="@color/second_white"
+        android:textSize="18dp"
+        app:cornerRadius="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_login_button"
+        app:strokeColor="@color/button_blue"
+        app:strokeWidth="3dp"
+        tools:ignore="SpUsage" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
