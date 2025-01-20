@@ -27,11 +27,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Blooms"
+        android:text="@string/app_name"
         android:textSize="38dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_activity_mainpage_lottie" />
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_mainpage_lottie"
+        tools:ignore="SpUsage" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/main_activity_subtitle"
@@ -46,49 +47,39 @@
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_activity_title" />
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_title"
+        tools:ignore="HardcodedText,SpUsage" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/main_activity_login_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
+        style="@style/BloomsButton"
         android:layout_marginTop="50dp"
-        android:backgroundTint="@color/button_blue"
-        android:fontFamily="@font/poppins_medium"
-        android:letterSpacing="0"
-        android:padding="14dp"
         android:text="@string/login"
-        android:textAllCaps="false"
-        android:textColor="@color/second_white"
-        android:textSize="18dp"
-        app:cornerRadius="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_activity_subtitle"
-        tools:ignore="SpUsage" />
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_subtitle"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/main_activity_signup_button"
+        android:layout_marginTop="20dp"
+        android:text="@string/sign_up"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_login_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="20dp"
         android:backgroundTint="#00000000"
         android:fontFamily="@font/poppins_medium"
         android:letterSpacing="0"
         android:padding="14dp"
-        android:text="@string/sign_up"
         android:textAllCaps="false"
         android:textColor="@color/second_white"
         android:textSize="18dp"
-        app:cornerRadius="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_activity_login_button"
+        app:cornerRadius="30dp"
         app:strokeColor="@color/button_blue"
         app:strokeWidth="3dp"
-        tools:ignore="SpUsage" />
+        tools:ignore="SpUsage"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
