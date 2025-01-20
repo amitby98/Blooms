@@ -2,6 +2,7 @@ package com.example.blooms
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,9 +14,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<MaterialButton>(R.id.main_activity_login_button).setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() {
+        findViewById<MaterialButton>(R.id.main_activity_login_button).setOnClickListener { handleButtonClick(it) }
+        findViewById<MaterialButton>(R.id.main_activity_signup_button).setOnClickListener { handleButtonClick(it) }
+    }
+
+    private fun handleButtonClick(view: View) {
+        when (view.id) {
+            R.id.main_activity_login_button -> navigateToActivity(LoginActivity::class.java)
+            R.id.main_activity_signup_button -> navigateToActivity(RegisterActivity::class.java)
         }
+    }
+
+    private fun navigateToActivity(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        startActivity(intent)
     }
 }

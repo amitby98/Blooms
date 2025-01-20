@@ -6,16 +6,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
 
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_register)
 
-        val animationView = findViewById<LottieAnimationView>(R.id.welcomeAnimation)
+        val animationView = findViewById<LottieAnimationView>(R.id.registerAnimation)
         animationView.playAnimation()
 
-        findViewById<TextView>(R.id.signUpText).setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
+        findViewById<TextView>(R.id.loginText).setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }
