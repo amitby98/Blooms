@@ -4,21 +4,22 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivStone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/stone"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitCenter"
+        android:src="@drawable/stone" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivBulb"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
-        android:src="@drawable/bulb"
+        android:layout_marginBottom="5dp"
         android:elevation="4dp"
+        android:src="@drawable/bulb"
         app:tint="#FFFFFF" />
 
 </FrameLayout>
