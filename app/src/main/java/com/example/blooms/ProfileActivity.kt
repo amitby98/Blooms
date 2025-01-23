@@ -2,6 +2,7 @@ package com.example.blooms
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
@@ -9,10 +10,12 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseUser
 
 class ProfileActivity : AppCompatActivity() {
 
-    // הגדרת המשתנים הגלובליים
     private lateinit var mAuth: FirebaseAuth
     private lateinit var backButton: AppCompatImageButton
     private lateinit var editButton: AppCompatImageButton
@@ -25,19 +28,14 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        // אתחול Firebase Auth
         mAuth = FirebaseAuth.getInstance()
 
-        // אתחול הרכיבים
         initializeViews()
-        // הגדרת המאזינים לכפתורים
         setupClickListeners()
-        // מילוי המידע של המשתמש
         populateUserData()
     }
 
     private fun initializeViews() {
-        // קישור כל הרכיבים מהלייאאוט
         backButton = findViewById(R.id.btnBack)
         editButton = findViewById(R.id.btnEdit)
         nameInput = findViewById(R.id.etName)
@@ -45,109 +43,166 @@ class ProfileActivity : AppCompatActivity() {
         passwordInput = findViewById(R.id.etPassword)
         logoutButton = findViewById(R.id.logoutButton)
 
-        // הגדרת מצב ההתחלתי של שדות הטקסט כלא ניתנים לעריכה
         setFieldsEditableState(false)
     }
 
     private fun setupClickListeners() {
-        // כפתור חזרה
         backButton.setOnClickListener {
             onBackPressed()
         }
 
-        // כפתור עריכה/שמירה
         editButton.setOnClickListener {
             handleEditButtonClick()
         }
 
-        // כפתור התנתקות
         logoutButton.setOnClickListener {
             handleLogout()
         }
     }
 
     private fun handleEditButtonClick() {
-        // בדיקה האם הכפתור במצב עריכה או שמירה
         if (editButton.isSelected) {
-            // במצב שמירה - שומרים את השינויים
             saveUserData()
         } else {
-            // במצב עריכה - מאפשרים עריכה
             setFieldsEditableState(true)
         }
-        // החלפת מצב הכפתור (וגם האייקון דרך ה-selector)
         editButton.isSelected = !editButton.isSelected
     }
 
     private fun setFieldsEditableState(isEditable: Boolean) {
-        // הגדרת מצב העריכה של השדות
         nameInput.isEnabled = isEditable
         emailInput.isEnabled = isEditable
-        // שדה הסיסמה תמיד נשאר לא ניתן לעריכה
-        passwordInput.isEnabled = false
+        passwordInput.isEnabled = false  // הסיסמה תמיד לא ניתנת לעריכה ישירה
     }
 
     private fun populateUserData() {
-        // קבלת המשתמש הנוכחי מפיירבייס
         val currentUser = mAuth.currentUser
 
         currentUser?.let { user ->
-            // הצגת האימייל
+            // מילוי הנתונים מהמשתמש המחובר
             emailInput.setText(user.email)
-
-            // הצגת השם אם קיים
-            user.displayName?.let { name ->
-                nameInput.setText(name)
-            }
-
-            // הצגת כוכביות במקום הסיסמה האמיתית
+            nameInput.setText(user.displayName)
             passwordInput.setText("********")
         }
     }
 
     private fun saveUserData() {
         val currentUser = mAuth.currentUser
-        val newName = nameInput.text.toString()
-        val newEmail = emailInput.text.toString()
+        val newName = nameInput.text.toString().trim()
+        val newEmail = emailInput.text.toString().trim()
+        val newPassword = passwordInput.text.toString()
 
         currentUser?.let { user ->
-            // עדכון השם
-            val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(newName)
-                .build()
+            // בדיקה אם יש שינויים שדורשים אימות מחדש
+            if (newEmail != user.email || newPassword != "********") {
+                showPasswordConfirmationDialog { currentPassword ->
+                    val credential = EmailAuthProvider.getCredential(user.email ?: "", currentPassword)
 
-            user.updateProfile(profileUpdates)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
-                        // חזרה למצב קריאה בלבד
-                        setFieldsEditableState(false)
-                    } else {
-                        Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-            // אם האימייל השתנה, מעדכנים גם אותו
-            if (newEmail != user.email) {
-                user.updateEmail(newEmail)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(this, "Email updated successfully", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this, "Failed to update email", Toast.LENGTH_SHORT).show()
+                    user.reauthenticate(credential)
+                        .addOnCompleteListener { reAuthTask ->
+                            if (reAuthTask.isSuccessful) {
+                                // עדכון כל השדות לאחר אימות מוצלח
+                                performUserUpdates(user, newName, newEmail, newPassword)
+                            } else {
+                                showToast("Authentication failed: ${reAuthTask.exception?.message}")
+                                setFieldsEditableState(false)
+                            }
                         }
-                    }
+                }
+            } else {
+                updateUserProfile(user, newName)
             }
         }
     }
 
-    private fun handleLogout() {
-        // התנתקות מפיירבייס
-        mAuth.signOut()
+    private fun performUserUpdates(user: FirebaseUser, newName: String, newEmail: String, newPassword: String) {
+        updateUserProfile(user, newName)
 
-        // חזרה למסך הראשי
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        // עדכון האימייל אם השתנה
+        if (newEmail != user.email) {
+            updateUserEmail(user, newEmail)
+        }
+
+        // עדכון הסיסמה אם השתנתה
+        if (newPassword != "********") {
+            updateUserPassword(user, newPassword)
+        }
+    }
+
+    private fun showPasswordConfirmationDialog(onConfirm: (String) -> Unit) {
+        val dialogView = LayoutInflater.from(this)
+            .inflate(R.layout.dialog_confirm_password, null)
+        val passwordInput = dialogView.findViewById<TextInputEditText>(R.id.passwordConfirmInput)
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Confirm Changes")
+            .setMessage("Please enter your current password to confirm changes")
+            .setView(dialogView)
+            .setPositiveButton("Confirm") { dialog, _ ->
+                val password = passwordInput.text?.toString() ?: ""
+                if (password.isNotEmpty()) {
+                    onConfirm(password)
+                } else {
+                    showToast("Password cannot be empty")
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+                setFieldsEditableState(false)
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun updateUserProfile(user: FirebaseUser, newName: String) {
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(newName)
+            .build()
+
+        user.updateProfile(profileUpdates)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast("Profile updated successfully")
+                    setFieldsEditableState(false)
+                } else {
+                    showToast("Failed to update profile: ${task.exception?.message}")
+                }
+            }
+    }
+
+    private fun updateUserEmail(user: FirebaseUser, newEmail: String) {
+        user.updateEmail(newEmail)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast("Email updated successfully")
+                } else {
+                    showToast("Failed to update email: ${task.exception?.message}")
+                }
+            }
+    }
+
+    private fun updateUserPassword(user: FirebaseUser, newPassword: String) {
+        user.updatePassword(newPassword)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast("Password updated successfully")
+                    passwordInput.setText("********")
+                } else {
+                    showToast("Failed to update password: ${task.exception?.message}")
+                }
+            }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleLogout() {
+        mAuth.signOut()
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
         startActivity(intent)
         finish()
     }
