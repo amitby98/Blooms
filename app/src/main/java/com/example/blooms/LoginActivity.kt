@@ -2,19 +2,26 @@ package com.example.blooms
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import com.airbnb.lottie.LottieAnimationView
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var mMoveToRegisterScreenBtn : AppCompatTextView
+    private lateinit var mLoginAnimationView : LottieAnimationView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.fragment_login)
 
-        val animationView = findViewById<LottieAnimationView>(R.id.welcomeAnimation)
-        animationView.playAnimation()
+        mMoveToRegisterScreenBtn = findViewById(R.id.signUpText)
+        mLoginAnimationView = findViewById(R.id.welcomeAnimation)
 
-        findViewById<TextView>(R.id.signUpText).setOnClickListener {
+        mLoginAnimationView.playAnimation()
+
+        mMoveToRegisterScreenBtn.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
