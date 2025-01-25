@@ -6,10 +6,10 @@
 
     <!-- Main background shape with wave -->
     <path
-        android:fillColor="#FFB6B6"
+        android:fillColor="#ef888c"
         android:pathData="M0,0
-        L0,200
-        C90,200 180,240 360,200
-        L360,0
-        Z" />
+    L0,200
+    C120,200 240,280 360,200
+    L360,0
+    Z" />
 </vector>

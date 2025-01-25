@@ -23,18 +23,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/bg_red_wave">
 
-            <com.airbnb.lottie.LottieAnimationView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/alertIcon"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/register_animation" />
+                app:srcCompat="@drawable/error_message" />
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/popupTitle"
+            android:fontFamily="@font/poppins_semibold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
@@ -52,6 +51,7 @@
             android:id="@+id/popupMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
@@ -62,19 +62,19 @@
             app:layout_constraintTop_toBottomOf="@+id/popupTitle"
             tools:text="שם המשתמש או הסיסמה אינם נכונים" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/errorButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:backgroundTint="@color/alert_red"
-            android:minWidth="130dp"
+            android:textColor="@color/second_white"
             android:paddingHorizontal="24dp"
             android:paddingVertical="12dp"
-            android:text="TRY AGAIN!"
-            android:textAllCaps="false"
-            app:cornerRadius="25dp"
+            android:text="Try again"
+            app:cornerRadius="50dp"
+            android:fontFamily="@font/poppins_semibold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -7,12 +7,10 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
-import com.airbnb.lottie.LottieAnimationView
 import com.example.blooms.R
 
 class ErrorDialog(private val context: Context) {
 
-    lateinit var lottieView : LottieAnimationView
     lateinit var titleText : AppCompatTextView
     lateinit var messageText : AppCompatTextView
     lateinit var actionButton : AppCompatButton
@@ -28,21 +26,9 @@ class ErrorDialog(private val context: Context) {
 
         val view = LayoutInflater.from(context).inflate(R.layout.general_popup, null)
 
-        lottieView = view.findViewById<LottieAnimationView>(R.id.alertIcon)
         titleText = view.findViewById<AppCompatTextView>(R.id.popupTitle)
         messageText = view.findViewById<AppCompatTextView>(R.id.popupMessage)
         //actionButton = view.findViewById<AppCompatButton>(R.id.errorButton)
-
-        try {
-            lottieView.apply {
-                setAnimation(R.raw.register_animation)
-                repeatCount = 0
-                speed = 1f
-                playAnimation()
-            }
-        } catch (e: Exception) {
-            lottieView.visibility = android.view.View.GONE
-        }
 
         // Set content
         titleText.text = title
