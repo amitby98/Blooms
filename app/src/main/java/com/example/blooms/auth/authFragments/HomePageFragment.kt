@@ -15,7 +15,6 @@ const val REGISTER = 2
 
 
 class HomePageFragment : Fragment() {
-    // הגדרת המשתנים בראש הקלאס
     private lateinit var mMainLottieImage: AppCompatImageView
     private lateinit var mMainTitle: AppCompatTextView
     private lateinit var mMainSubtitle: AppCompatTextView
