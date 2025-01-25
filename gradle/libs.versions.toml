@@ -14,6 +14,11 @@ cardview = "1.0.0"
 recyclerview = "1.4.0"
 googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.1.0"
+viewModel = "2.7.0"
+liveData = "2.7.0"
+coroutines = "1.7.3"
+fragment = "2.7.7"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +33,11 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+view-model = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModel" }
+live-data = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "liveData" }
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutines" }
+fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "fragment" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

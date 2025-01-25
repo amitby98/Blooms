@@ -45,6 +45,11 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.androidx.cardview)
     implementation(libs.firebase.auth)
+    implementation(libs.view.model)
+    implementation(libs.live.data)
+    implementation(libs.coroutines)
+    implementation(libs.fragment)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
