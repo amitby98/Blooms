@@ -28,19 +28,19 @@ class ErrorDialog(private val context: Context) {
 
         titleText = view.findViewById<AppCompatTextView>(R.id.popupTitle)
         messageText = view.findViewById<AppCompatTextView>(R.id.popupMessage)
-        //actionButton = view.findViewById<AppCompatButton>(R.id.errorButton)
+        actionButton = view.findViewById<AppCompatButton>(R.id.errorButton)
 
         // Set content
         titleText.text = title
         messageText.text = message
-       // actionButton.text = buttonText
+        actionButton.text = buttonText
 
 
         // Set button click listener
-//        actionButton.setOnClickListener {
-//            onButtonClick()
-//            dialog.dismiss()
-//        }
+        actionButton.setOnClickListener {
+            onButtonClick()
+            dialog.dismiss()
+        }
 
         // Configure dialog window
         dialog.setContentView(view)
