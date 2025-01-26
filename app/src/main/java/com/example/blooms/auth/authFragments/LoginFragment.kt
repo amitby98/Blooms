@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.example.blooms.ProfileActivity
 import com.example.blooms.R
@@ -74,10 +75,7 @@ class LoginFragment : Fragment() {
 
     private fun setupClickListeners() {
         mMoveToRegisterScreenBtn.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, RegisterFragment())
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
         mLoginButton.setOnClickListener {

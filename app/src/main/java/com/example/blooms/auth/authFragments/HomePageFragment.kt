@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.blooms.R
 import com.google.android.material.button.MaterialButton
 
@@ -40,31 +41,21 @@ class HomePageFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        mLoginButton.setOnClickListener { handleButtonClick(1) }
+        mLoginButton.setOnClickListener {
+            handleButtonClick(LOGIN)
+        }
 
 
         mSignupButton.setOnClickListener {
-            handleButtonClick(2)
+            handleButtonClick(REGISTER)
         }
     }
 
     private fun handleButtonClick(moveTo: Int) {
-        var newFragment = Fragment()
         when(moveTo) {
-            1 -> newFragment = LoginFragment.newInstance()
-            2 -> newFragment = RegisterFragment.newInstance()
+            LOGIN -> findNavController().navigate(R.id.action_homePageFragment_to_loginFragment)
+            REGISTER -> findNavController().navigate(R.id.action_homePageFragment_to_registerFragment)
         }
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, newFragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun handleRegisterButtonClick() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, LoginFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
     }
 
     companion object {

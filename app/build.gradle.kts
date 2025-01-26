@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.live.data)
     implementation(libs.coroutines)
     implementation(libs.fragment)
+    implementation(libs.navigation.ui)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
