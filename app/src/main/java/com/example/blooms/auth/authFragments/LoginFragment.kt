@@ -17,6 +17,7 @@ import com.example.blooms.R
 import com.example.blooms.auth.authViewModel.AuthState
 import com.example.blooms.auth.authViewModel.AuthViewModel
 import com.example.blooms.general.ErrorDialog
+import com.example.blooms.mainApp.MainAppActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 
@@ -49,11 +50,11 @@ class LoginFragment : Fragment() {
         viewModel.authState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AuthState.Loading -> {}
-                is AuthState.Success -> {}
+                is AuthState.Success -> {
+                    activity?.startActivity(Intent(requireActivity(), MainAppActivity::class.java))
+                }
                 is AuthState.Error -> {
                     val customPopup = ErrorDialog(requireActivity())
-
-                    // Error popup example
                     customPopup.show(
                         "Oops",
                         state.message,
@@ -106,15 +107,5 @@ class LoginFragment : Fragment() {
         if (validateInput(username,password)) {
             viewModel.signIn(username, password)
         }
-    }
-
-    private fun navigateToProfile() {
-        val intent = Intent(requireActivity(), ProfileActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
-    }
-
-    companion object {
-        fun newInstance() = LoginFragment()
     }
 }

@@ -29,7 +29,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".PathActivity"
+            android:name=".mainApp.MainAppActivity"
             android:exported="false" />
 
     </application>

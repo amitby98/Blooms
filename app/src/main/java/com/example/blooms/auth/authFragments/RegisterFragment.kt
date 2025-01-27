@@ -1,5 +1,6 @@
 package com.example.blooms.auth.authFragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.example.blooms.R
 import com.example.blooms.auth.authViewModel.AuthState
 import com.example.blooms.auth.authViewModel.AuthViewModel
 import com.example.blooms.general.ErrorDialog
+import com.example.blooms.mainApp.MainAppActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlin.getValue
@@ -92,16 +94,17 @@ class RegisterFragment : Fragment() {
         viewModel.authState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AuthState.Loading -> {}
-                is AuthState.Success -> {}
+                is AuthState.Success -> {
+                    activity?.startActivity(Intent(requireActivity(),MainAppActivity::class.java))
+                }
                 is AuthState.Error -> {
                     val customPopup = ErrorDialog(requireActivity())
-
-                    // Error popup example
                     customPopup.show(
                         "Oops",
                         state.message,
                         "TRY AGAIN"
                     )
+                    mRegisterBtn?.isEnabled = true
                 }
                 else -> {}
             }
@@ -112,7 +115,4 @@ class RegisterFragment : Fragment() {
         mRegisterBtn?.isEnabled = !isLoading
     }
 
-    companion object {
-        fun newInstance() = RegisterFragment()
-    }
 }
