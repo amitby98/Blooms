@@ -95,7 +95,8 @@ class RegisterFragment : Fragment() {
             when (state) {
                 is AuthState.Loading -> {}
                 is AuthState.Success -> {
-                    activity?.startActivity(Intent(requireActivity(),MainAppActivity::class.java))
+                    val action = RegisterFragmentDirections.actionRegisterFragmentToProfileFragment2(isAfterRegistrationScreen = true)
+                    findNavController().navigate(action)
                 }
                 is AuthState.Error -> {
                     val customPopup = ErrorDialog(requireActivity())

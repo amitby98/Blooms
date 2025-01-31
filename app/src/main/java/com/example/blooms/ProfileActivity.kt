@@ -3,9 +3,12 @@ package com.example.blooms
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.fragment.app.Fragment
 import com.example.blooms.auth.MainActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -21,6 +24,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var backButton: AppCompatImageButton
     private lateinit var editButton: AppCompatImageButton
     private lateinit var nameInput: TextInputEditText
+    private lateinit var lastNameInput: TextInputEditText
+    private lateinit var birthDateInput: TextInputEditText
     private lateinit var emailInput: TextInputEditText
     private lateinit var passwordInput: TextInputEditText
     private lateinit var logoutButton: MaterialButton
@@ -48,9 +53,9 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        backButton.setOnClickListener {
-            onBackPressed()
-        }
+//        backButton.setOnClickListener {
+//            activity.onBackPressed()
+//        }
 
         editButton.setOnClickListener {
             handleEditButtonClick()

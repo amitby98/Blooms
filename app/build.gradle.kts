@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.navigation.safe.args.plugin)
 }
 
 android {
@@ -50,6 +51,8 @@ dependencies {
     implementation(libs.coroutines)
     implementation(libs.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
