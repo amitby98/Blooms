@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1044104162905",
-    "project_id": "blooms-9eccd",
-    "storage_bucket": "blooms-9eccd.firebasestorage.app"
+    "project_number": "976948613601",
+    "project_id": "blooms-android-project-2025",
+    "storage_bucket": "blooms-android-project-2025.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1044104162905:android:d8cbe4a5c05e4090374b48",
+        "mobilesdk_app_id": "1:976948613601:android:0fb4eeb5b479ec272342a0",
         "android_client_info": {
           "package_name": "com.example.blooms"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD-p4dG1hNCZNSPXUWNGz9KNgYvihCwZI0"
+          "current_key": "AIzaSyDax-vgTZwdt9b1TSwMTOAndfI7opze_Sg"
         }
       ],
       "services": {

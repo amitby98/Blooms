@@ -74,6 +74,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    // todo: move to viewModel
     private fun validateInput(email: String, password: String): Boolean {
         var isValid = true
 

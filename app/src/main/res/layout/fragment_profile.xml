@@ -58,8 +58,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvProfile"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="5dp"
             app:cardCornerRadius="80dp"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
@@ -168,14 +168,19 @@
                 style="@style/ProfileEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+                android:enabled="true"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 tools:text="user@example.com"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
+
+
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
+            android:id="@+id/tilOldPassword"
             style="@style/ProfileTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -185,12 +190,34 @@
             app:layout_constraintTop_toBottomOf="@id/tilEmail">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etOldPassword"
+                style="@style/ProfileEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:text="********"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/ProfileTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            app:passwordToggleEnabled="true"
+            app:layout_constraintTop_toBottomOf="@id/tilOldPassword">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 style="@style/ProfileEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:hint="Password"
+                android:enabled="true"
+                android:hint="New Password"
                 android:inputType="textPassword"
                 android:text="********"/>
         </com.google.android.material.textfield.TextInputLayout>

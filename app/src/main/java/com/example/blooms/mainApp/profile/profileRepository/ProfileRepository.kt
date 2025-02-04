@@ -1,10 +1,10 @@
 package com.example.blooms.mainApp.profile.profileRepository
 
+import android.util.Log
 import com.example.blooms.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -14,36 +14,47 @@ class ProfileRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private val userReference: DatabaseReference = database.getReference("users")
+    private val userReference = database.getReference("users")
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: throw Exception("User not authenticated")
 
-    suspend fun saveUser(user: User): Result<Boolean> =
+    suspend fun getUserData(): Result<User?> =
         withContext(Dispatchers.IO) {
-            try {
+            kotlin.runCatching {
+                Log.d("Firebase", "Fetching data for userId: $userId")
+                val snapshot = userReference.child(userId).get().await()
+                Log.d("Firebase", "Snapshot fetched: ${snapshot.value}")
+                if (snapshot.exists()) {
+                    val user = snapshot.getValue(User::class.java)
+                    Log.d("Firebase", "User data: $user")
+                    user
+                } else {
+                    Log.d("Firebase", "No data found for userId: $userId")
+                    null
+                }
+            }
+    }
+
+    suspend fun saveUserData(user: User): Result<Boolean> =
+        withContext(Dispatchers.IO){
+            kotlin.runCatching {
                 userReference.child(userId).setValue(user)
-                Result.success(true)
-            } catch (e: Exception) {
-                Result.failure(e)
+                true
             }
         }
 
-    suspend fun getUserData(email: String, password: String): Result<FirebaseUser> =
+    suspend fun updateUserEmail(newEmail: String): Result<Boolean> =
         withContext(Dispatchers.IO) {
-            try {
-                val result = auth.createUserWithEmailAndPassword(email, password).await()
-                Result.success(result.user!!)
-            } catch (e: Exception) {
-                Result.failure(e)
+            kotlin.runCatching {
+                auth.currentUser?.updateEmail(newEmail)
+                true
             }
         }
 
-    suspend fun signIn(email: String, password: String): Result<FirebaseUser> =
+    suspend fun updateUserPassword(password: String): Result<Boolean> =
         withContext(Dispatchers.IO) {
-            try {
-                val result = auth.signInWithEmailAndPassword(email, password).await()
-                Result.success(result.user!!)
-            } catch (e: Exception) {
-                Result.failure(e)
+            kotlin.runCatching {
+                auth.currentUser?.updatePassword(password)
+                true
             }
         }
 
@@ -51,5 +62,4 @@ class ProfileRepository {
         auth.signOut()
     }
 
-    fun getCurrentUser(): FirebaseUser? = auth.currentUser
 }

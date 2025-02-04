@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
-import com.example.blooms.ProfileActivity
 import com.example.blooms.R
 import com.example.blooms.auth.authViewModel.AuthState
 import com.example.blooms.auth.authViewModel.AuthViewModel
@@ -84,6 +83,7 @@ class LoginFragment : Fragment() {
         }
     }
 
+    // todo: move to viewModel
     private fun validateInput(email: String, password: String): Boolean {
         var isValid = true
 

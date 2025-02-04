@@ -14,15 +14,51 @@ class ProfileViewModel : ViewModel() {
     private val _profileState = MutableLiveData<ProfileState>()
     val profileState: LiveData<ProfileState> = _profileState
 
-
-    fun saveUser(user: User) {
+    fun getUserData() {
         viewModelScope.launch {
-            repository.saveUser(user)
+            repository.getUserData()
+                .onSuccess { user ->
+                    _profileState.value = ProfileState.GetUserDataSuccess(user = user)
+                }
+                .onFailure { exception ->
+                    _profileState.value = ProfileState.GetUserDataError(exception.message ?: "")
+                }
+        }
+    }
+
+    fun saveUserData(user: User) {
+        viewModelScope.launch {
+            repository.saveUserData(user)
                 .onSuccess {
                     _profileState.value = ProfileState.SaveUserDataSuccess
                 }
                 .onFailure { exception ->
                     _profileState.value = ProfileState.GetUserDataError(exception.message ?: "Sign in failed")
+                }
+        }
+    }
+
+
+     fun updateUserEmail(newEmail: String) {
+         viewModelScope.launch {
+             repository.updateUserEmail(newEmail)
+                 .onSuccess {
+                     _profileState.value = ProfileState.UpdateEmailSuccess
+                 }
+                 .onFailure { exception ->
+                     _profileState.value = ProfileState.GetUserDataError(exception.message ?: "Update Email Error")
+                 }
+         }
+    }
+
+    fun updateUserPassword(newPassword: String) {
+        viewModelScope.launch {
+            repository.updateUserPassword(newPassword)
+                .onSuccess {
+                    _profileState.value = ProfileState.UpdatePasswordSuccess
+                }
+                .onFailure { exception ->
+                    _profileState.value = ProfileState.UpdatePasswordError(exception.message ?: "Update Password Error")
                 }
         }
     }

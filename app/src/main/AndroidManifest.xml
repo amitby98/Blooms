@@ -25,10 +25,6 @@
         </activity>
 
         <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".mainApp.MainAppActivity"
             android:exported="false" />
 

@@ -7,11 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.blooms.auth.authFragments.HomePageFragment
-import com.example.blooms.auth.authFragments.LoginFragment
-import com.example.blooms.auth.authFragments.RegisterFragment
 import com.example.blooms.R
 
 class MainActivity : AppCompatActivity() {
@@ -31,4 +26,5 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
+    // todo: add back support
 }

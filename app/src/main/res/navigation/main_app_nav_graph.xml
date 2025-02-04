@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_app_nav_graph"
+    app:startDestination="@id/addNewTargetFragment">
+
+    <fragment
+        android:id="@+id/addNewTargetFragment"
+        android:name="com.example.blooms.mainApp.addTarget.AddNewTargetFragment"
+        android:label="AddNewTargetFragment" />
+    <fragment
+        android:id="@+id/editMyTargetFragment"
+        android:name="com.example.blooms.mainApp.editMyTarget.EditMyTargetFragment"
+        android:label="EditMyTargetFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.blooms.mainApp.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.blooms.mainApp.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/showAllTargetFragment"
+        android:name="com.example.blooms.mainApp.home.ShowAllTargetFragment"
+        android:label="ShowAllTargetFragment" />
+</navigation>

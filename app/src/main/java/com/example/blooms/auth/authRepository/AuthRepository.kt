@@ -9,23 +9,20 @@ import kotlinx.coroutines.withContext
 class AuthRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    suspend fun signUp(email: String, password: String): Result<FirebaseUser> =
+    suspend fun signUp(email: String, password: String): Result<FirebaseUser?> =
         withContext(Dispatchers.IO) {
-            try {
+            kotlin.runCatching {
                 val result = auth.createUserWithEmailAndPassword(email, password).await()
-                Result.success(result.user!!)
-            } catch (e: Exception) {
-                Result.failure(e)
+                result.user
             }
         }
 
-    suspend fun signIn(email: String, password: String): Result<FirebaseUser> =
+
+    suspend fun signIn(email: String, password: String): Result<FirebaseUser?> =
         withContext(Dispatchers.IO) {
-            try {
+            kotlin.runCatching {
                 val result = auth.signInWithEmailAndPassword(email, password).await()
-                Result.success(result.user!!)
-            } catch (e: Exception) {
-                Result.failure(e)
+                result.user
             }
         }
 

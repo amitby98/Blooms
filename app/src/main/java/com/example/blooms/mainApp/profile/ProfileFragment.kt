@@ -15,6 +15,7 @@ import com.example.blooms.auth.MainActivity
 import com.example.blooms.auth.authViewModel.AuthState
 import com.example.blooms.auth.authViewModel.AuthViewModel
 import com.example.blooms.general.ErrorDialog
+import com.example.blooms.general.LoadingDialog
 import com.example.blooms.mainApp.MainAppActivity
 import com.example.blooms.mainApp.profile.profileViewModel.ProfileState
 import com.example.blooms.mainApp.profile.profileViewModel.ProfileViewModel
@@ -37,9 +38,12 @@ class ProfileFragment : Fragment() {
     private lateinit var birthDateInput: TextInputEditText
     private lateinit var emailInput: TextInputEditText
     private lateinit var passwordInput: TextInputEditText
+    private lateinit var oldPasswordInput: TextInputEditText
     private lateinit var logoutButton: AppCompatImageButton
     private val viewModel: ProfileViewModel by viewModels()
     private var isAfterRegistrationScreen = false
+    private lateinit var loadingDialog: LoadingDialog
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,16 +51,22 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-        val args = ProfileFragmentArgs.fromBundle(requireArguments())
-        isAfterRegistrationScreen = args.isAfterRegistrationScreen
+        try{
+            val args = ProfileFragmentArgs.fromBundle(requireArguments())
+            isAfterRegistrationScreen = args.isAfterRegistrationScreen
+
+        } catch (e: Exception) {
+            isAfterRegistrationScreen = false
+        }
         initializeViews(view)
         setupClickListeners()
-        //TODO: Natali - start shimmer and setFieldsEditableState(false)
-        // - if isAfterRegistrationScreen == true -> setFieldsEditableState(true)
         if(isAfterRegistrationScreen) {
             setFieldsEditableState(true)
             passwordInput.visibility = View.GONE
+            oldPasswordInput.visibility = View.GONE
             populateUserData()
+        } else {
+            loadingDialog?.show()
         }
         populateUserData()
         setupObservers()
@@ -71,7 +81,9 @@ class ProfileFragment : Fragment() {
         birthDateInput = view.findViewById(R.id.etBirthDate)
         emailInput = view.findViewById(R.id.etEmail)
         passwordInput = view.findViewById(R.id.etPassword)
+        oldPasswordInput = view.findViewById(R.id.etOldPassword)
         logoutButton = view.findViewById(R.id.logoutButton)
+        loadingDialog = LoadingDialog(requireContext())
     }
 
     private fun setupClickListeners() {
@@ -89,9 +101,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun handleSaveButtonClick() {
-        if (saveButton.isSelected) {
-            saveUserData()
-        }
+        saveUserData()
     }
 
     private fun setFieldsEditableState(isEditable: Boolean) {
@@ -104,17 +114,19 @@ class ProfileFragment : Fragment() {
         lastNameInput.isEnabled = isEditable
         birthDateInput.isEnabled = isEditable
         passwordInput.isEnabled = isEditable
-        saveButton.isSelected = isEditable
+        oldPasswordInput.isEnabled = isEditable
     }
 
     private fun populateUserData() {
-        //TODO: Natali - need to add service that return user data from firebase database - only if isAfterRegistrationScreen is false
+        if(!isAfterRegistrationScreen) {
+            viewModel.getUserData()
+        }
         val currentUser = mAuth.currentUser
-
         currentUser?.let { user ->
             emailInput.setText(user.email)
             if(!isAfterRegistrationScreen) {
                 passwordInput.setText("********")
+                oldPasswordInput.setText("********")
             }
         }
     }
@@ -124,6 +136,7 @@ class ProfileFragment : Fragment() {
         viewModel.profileState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ProfileState.SaveUserDataSuccess -> {
+                    loadingDialog.dismiss()
                     if(isAfterRegistrationScreen){
                         activity?.startActivity(Intent(requireActivity(), MainAppActivity::class.java))
                     } else {
@@ -131,12 +144,25 @@ class ProfileFragment : Fragment() {
                     }
                 }
                 is ProfileState.SaveUserDataError -> {
+                    loadingDialog.dismiss()
                     val customPopup = ErrorDialog(requireActivity())
                     customPopup.show(
                         "Oops",
                         state.message,
                         "TRY AGAIN"
                     )
+                }
+                is ProfileState.GetUserDataSuccess -> {
+                    loadingDialog.dismiss()
+                    if(state.user != null) {
+                        val user = state.user
+                        nameInput.setText(user.firstName)
+                        lastNameInput.setText(user.lastName)
+                        emailInput.setText(user.email)
+                        birthDateInput.setText(user.birthDate)
+                    } else {
+                        //TODO: show error popup
+                    }
                 }
                 else -> {}
             }
@@ -151,7 +177,6 @@ class ProfileFragment : Fragment() {
         val birthDate = birthDateInput.text.toString().trim()
         var newEmail = emailInput.text.toString().trim()
 
-        //TODO: Natali - need to handle with check fields - newName, lastName
         if(newName.isEmpty() || lastName.isEmpty() || birthDate.isEmpty() || newEmail.isEmpty()) {
             showToast("Some fields are empty")
             return
@@ -161,22 +186,29 @@ class ProfileFragment : Fragment() {
         if(!isAfterRegistrationScreen) {
             newEmail = emailInput.text.toString().trim()
             val newPassword = passwordInput.text.toString()
+            val oldPassword = oldPasswordInput.text.toString()
 
             currentUser?.let { user ->
                 if (newEmail != user.email || newPassword != "********") {
+                    if(oldPassword == "********") {
+                        showToast("Please enter old password")
+                        return
+                    }
                     if(newPassword.isEmpty()) {
                         showToast("Password field is empty")
                         return
                     }
-                    val credential = EmailAuthProvider.getCredential(user.email ?: "", newPassword)
+                    if (newPassword.length < 6) {
+                        Toast.makeText(requireContext(), "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                    }
+
+                    val credential = EmailAuthProvider.getCredential(user.email ?: "", oldPassword)
                     user.reauthenticate(credential)
                         .addOnCompleteListener { reAuthTask ->
                             if (reAuthTask.isSuccessful) {
-                                performUserUpdates(user, newEmail, newPassword)
-                                updateUserProfile(userData)
+                                performUserUpdates(user, newEmail, newPassword, userData)
                             } else {
                                 showToast("Authentication failed: ${reAuthTask.exception?.message}")
-                                setFieldsEditableState(false)
                             }
                         }
                 } else {
@@ -189,42 +221,20 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateUserProfile(user : User) {
-        viewModel.saveUser(user)
+        viewModel.saveUserData(user)
     }
 
-    private fun performUserUpdates(user: FirebaseUser, newEmail: String, newPassword: String) {
-
+    private fun performUserUpdates(user: FirebaseUser, newEmail: String, newPassword: String, userData: User) {
         if (newEmail != user.email) {
-            updateUserEmail(user, newEmail)
+            viewModel.updateUserEmail(newEmail)
         }
 
         if (newPassword != "********") {
-            updateUserPassword(user, newPassword)
+            viewModel.updateUserPassword(newPassword)
         }
+        updateUserProfile(userData)
     }
 
-    private fun updateUserEmail(user: FirebaseUser, newEmail: String) {
-        user.updateEmail(newEmail)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    showToast("Email updated successfully")
-                } else {
-                    showToast("Failed to update email: ${task.exception?.message}")
-                }
-            }
-    }
-
-    private fun updateUserPassword(user: FirebaseUser, newPassword: String) {
-        user.updatePassword(newPassword)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    showToast("Password updated successfully")
-                    passwordInput.setText("********")
-                } else {
-                    showToast("Failed to update password: ${task.exception?.message}")
-                }
-            }
-    }
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.blooms.auth.authRepository.AuthRepository
 import kotlinx.coroutines.launch
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel() : ViewModel() {
     private val repository = AuthRepository()
 
     private val _authState = MutableLiveData<AuthState>()
@@ -18,10 +18,14 @@ class AuthViewModel : ViewModel() {
             _authState.value = AuthState.Loading
             repository.signUp(email, password)
                 .onSuccess { user ->
-                    _authState.value = AuthState.Success(user)
+                    user?.let {
+                        _authState.value = AuthState.Success(it)
+                    } ?: run {
+                        _authState.value = AuthState.Error("Sign in failed")
+                    }
                 }
                 .onFailure { exception ->
-                    _authState.value = AuthState.Error(exception.message ?: "Sign up failed")
+                    _authState.value = AuthState.Error(exception.message ?: "Sign in failed")
                 }
         }
     }
@@ -31,7 +35,11 @@ class AuthViewModel : ViewModel() {
             _authState.value = AuthState.Loading
             repository.signIn(email, password)
                 .onSuccess { user ->
-                    _authState.value = AuthState.Success(user)
+                    user?.let {
+                        _authState.value = AuthState.Success(user)
+                    } ?: run {
+                        _authState.value = AuthState.Error("Sign up failed")
+                    }
                 }
                 .onFailure { exception ->
                     _authState.value = AuthState.Error(exception.message ?: "Sign in failed")
