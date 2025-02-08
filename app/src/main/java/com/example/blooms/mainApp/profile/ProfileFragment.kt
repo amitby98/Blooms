@@ -21,17 +21,21 @@ import com.example.blooms.mainApp.profile.profileViewModel.ProfileState
 import com.example.blooms.mainApp.profile.profileViewModel.ProfileViewModel
 import com.example.blooms.model.User
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseUser
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ProfileFragment : Fragment() {
 
     private var mAuth = FirebaseAuth.getInstance()
-    private lateinit var backButton: AppCompatImageButton
     private lateinit var saveButton: MaterialButton
     private lateinit var nameInput: TextInputEditText
     private lateinit var lastNameInput: TextInputEditText
@@ -39,6 +43,8 @@ class ProfileFragment : Fragment() {
     private lateinit var emailInput: TextInputEditText
     private lateinit var passwordInput: TextInputEditText
     private lateinit var oldPasswordInput: TextInputEditText
+    private lateinit var tilPassword: TextInputLayout
+    private lateinit var tilPasswordOld: TextInputLayout
     private lateinit var logoutButton: AppCompatImageButton
     private val viewModel: ProfileViewModel by viewModels()
     private var isAfterRegistrationScreen = false
@@ -64,6 +70,9 @@ class ProfileFragment : Fragment() {
             setFieldsEditableState(true)
             passwordInput.visibility = View.GONE
             oldPasswordInput.visibility = View.GONE
+            tilPasswordOld.visibility = View.GONE
+            tilPassword.visibility = View.GONE
+            logoutButton.visibility = View.GONE
             populateUserData()
         } else {
             loadingDialog?.show()
@@ -74,7 +83,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initializeViews(view : View) {
-        backButton = view.findViewById(R.id.btnBack)
         saveButton = view.findViewById(R.id.saveButton)
         nameInput = view.findViewById(R.id.etName)
         lastNameInput = view.findViewById(R.id.etLastName)
@@ -82,6 +90,8 @@ class ProfileFragment : Fragment() {
         emailInput = view.findViewById(R.id.etEmail)
         passwordInput = view.findViewById(R.id.etPassword)
         oldPasswordInput = view.findViewById(R.id.etOldPassword)
+        tilPasswordOld = view.findViewById(R.id.tilOldPassword)
+        tilPassword = view.findViewById(R.id.tilPassword)
         logoutButton = view.findViewById(R.id.logoutButton)
         loadingDialog = LoadingDialog(requireContext())
     }
@@ -97,6 +107,10 @@ class ProfileFragment : Fragment() {
 
         logoutButton.setOnClickListener {
             handleLogout()
+        }
+
+        birthDateInput.setOnClickListener {
+            showDatePicker()
         }
     }
 
@@ -238,6 +252,30 @@ class ProfileFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDatePicker() {
+        // Create MaterialDatePicker instance
+        val materialDatePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select Date")
+            .build()
+
+        // Show the Material Date Picker
+        materialDatePicker.show(requireActivity().supportFragmentManager, materialDatePicker.toString())
+
+        // Set listener for when the user selects a date
+        materialDatePicker.addOnPositiveButtonClickListener { selection ->
+            // Format the selected date into a readable format
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val formattedDate = sdf.format(Date(selection))
+
+            // Set the formatted date in the TextInputEditText
+            birthDateInput.setText(formattedDate)
+        }
+
+        // Handle dismiss or negative button (optional)
+        materialDatePicker.addOnNegativeButtonClickListener {
+        }
     }
 
     private fun handleLogout() {

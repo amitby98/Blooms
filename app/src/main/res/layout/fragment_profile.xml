@@ -12,20 +12,20 @@
         android:layout_height="match_parent"
         android:background="@drawable/gradient_background">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="18dp"
-            android:background="@drawable/btn_background"
-            android:clickable="true"
-            android:contentDescription="Navigate back"
-            android:focusable="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_back"
-            app:tint="@color/icons_blue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <androidx.appcompat.widget.AppCompatImageButton-->
+<!--            android:id="@+id/btnBack"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_margin="18dp"-->
+<!--            android:background="@drawable/btn_background"-->
+<!--            android:clickable="true"-->
+<!--            android:contentDescription="Navigate back"-->
+<!--            android:focusable="true"-->
+<!--            android:padding="8dp"-->
+<!--            android:src="@drawable/ic_back"-->
+<!--            app:tint="@color/icons_blue"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/logoutButton"
@@ -36,7 +36,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="8dp"
-            android:src="@drawable/selector_edit_save"
+            android:src="@drawable/baseline_logout_24"
             android:contentDescription="Toggle edit mode"
             app:tint="@color/icons_blue"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/circle_background"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_add_black"
             android:padding="4dp"
             android:elevation="8dp"
             android:contentDescription="Add profile photo"
@@ -146,6 +146,7 @@
                 android:layout_height="wrap_content"
                 android:enabled="true"
                 android:hint="Birth Date"
+                android:focusable="false"
                 android:inputType="textPersonName"
                 tools:text="DD/MM/YYYY"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -173,10 +174,6 @@
                 android:inputType="textEmailAddress"
                 tools:text="user@example.com"/>
         </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
 
 
         <com.google.android.material.textfield.TextInputLayout
