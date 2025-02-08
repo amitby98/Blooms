@@ -1,21 +1,27 @@
 package com.example.blooms.mainApp.profile
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.blooms.R
 import com.example.blooms.auth.MainActivity
-import com.example.blooms.auth.authViewModel.AuthState
-import com.example.blooms.auth.authViewModel.AuthViewModel
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.LoadingDialog
+import com.example.blooms.general.SuccessDialog
 import com.example.blooms.mainApp.MainAppActivity
 import com.example.blooms.mainApp.profile.profileViewModel.ProfileState
 import com.example.blooms.mainApp.profile.profileViewModel.ProfileViewModel
@@ -24,11 +30,10 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -46,9 +51,12 @@ class ProfileFragment : Fragment() {
     private lateinit var tilPassword: TextInputLayout
     private lateinit var tilPasswordOld: TextInputLayout
     private lateinit var logoutButton: AppCompatImageButton
+    private lateinit var addImage: AppCompatImageButton
+    private lateinit var profileImage: AppCompatImageView
     private val viewModel: ProfileViewModel by viewModels()
     private var isAfterRegistrationScreen = false
     private lateinit var loadingDialog: LoadingDialog
+    private var imageUri: Uri? = null
 
 
     override fun onCreateView(
@@ -93,13 +101,12 @@ class ProfileFragment : Fragment() {
         tilPasswordOld = view.findViewById(R.id.tilOldPassword)
         tilPassword = view.findViewById(R.id.tilPassword)
         logoutButton = view.findViewById(R.id.logoutButton)
+        profileImage = view.findViewById(R.id.ivProfile)
+        addImage = view.findViewById(R.id.btnAddPhoto)
         loadingDialog = LoadingDialog(requireContext())
     }
 
     private fun setupClickListeners() {
-//        backButton.setOnClickListener {
-//            activity.onBackPressed()
-//        }
 
         saveButton.setOnClickListener {
             handleSaveButtonClick()
@@ -111,6 +118,10 @@ class ProfileFragment : Fragment() {
 
         birthDateInput.setOnClickListener {
             showDatePicker()
+        }
+
+        addImage.setOnClickListener {
+            openGallery()
         }
     }
 
@@ -154,7 +165,12 @@ class ProfileFragment : Fragment() {
                     if(isAfterRegistrationScreen){
                         activity?.startActivity(Intent(requireActivity(), MainAppActivity::class.java))
                     } else {
-
+                        val customPopup = SuccessDialog(requireActivity())
+                        customPopup.show(
+                            "איזה כיף...",
+                            "הנתונים נשמרו בהצלחה",
+                            "סגור"
+                        )
                     }
                 }
                 is ProfileState.SaveUserDataError -> {
@@ -174,9 +190,17 @@ class ProfileFragment : Fragment() {
                         lastNameInput.setText(user.lastName)
                         emailInput.setText(user.email)
                         birthDateInput.setText(user.birthDate)
+                        if(!user.profileImage.isNullOrEmpty()) {
+                            val imageBitmap = viewModel.convertBase64ToBitmap(user.profileImage)
+                            profileImage.setImageBitmap(imageBitmap)
+                        }
                     } else {
-                        //TODO: show error popup
-                    }
+                        val customPopup = ErrorDialog(requireActivity())
+                        customPopup.show(
+                            "אופס",
+                            "משהו השתבש",
+                            "אנא נסה שוב במועד מאוחר יותר"
+                        )                    }
                 }
                 else -> {}
             }
@@ -190,12 +214,16 @@ class ProfileFragment : Fragment() {
         val lastName = lastNameInput.text.toString().trim()
         val birthDate = birthDateInput.text.toString().trim()
         var newEmail = emailInput.text.toString().trim()
+        var profileImageString = ""
+        val bitmap = profileImage.drawable.toBitmap()
+        profileImageString = viewModel.convertBitmapToBase64(bitmap)
+
 
         if(newName.isEmpty() || lastName.isEmpty() || birthDate.isEmpty() || newEmail.isEmpty()) {
             showToast("Some fields are empty")
             return
         }
-        val userData = User(newName,lastName,birthDate,newEmail )
+        val userData = User(newName,lastName,birthDate,newEmail, profileImageString)
 
         if(!isAfterRegistrationScreen) {
             newEmail = emailInput.text.toString().trim()
@@ -214,14 +242,17 @@ class ProfileFragment : Fragment() {
                     }
                     if (newPassword.length < 6) {
                         Toast.makeText(requireContext(), "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                        return
                     }
 
+                    loadingDialog.show()
                     val credential = EmailAuthProvider.getCredential(user.email ?: "", oldPassword)
                     user.reauthenticate(credential)
                         .addOnCompleteListener { reAuthTask ->
                             if (reAuthTask.isSuccessful) {
                                 performUserUpdates(user, newEmail, newPassword, userData)
                             } else {
+                                loadingDialog.dismiss()
                                 showToast("Authentication failed: ${reAuthTask.exception?.message}")
                             }
                         }
@@ -235,6 +266,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateUserProfile(user : User) {
+        if(!loadingDialog.isShowing) {
+            loadingDialog.show()
+        }
         viewModel.saveUserData(user)
     }
 
@@ -269,21 +303,87 @@ class ProfileFragment : Fragment() {
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val formattedDate = sdf.format(Date(selection))
 
-            // Set the formatted date in the TextInputEditText
             birthDateInput.setText(formattedDate)
         }
 
-        // Handle dismiss or negative button (optional)
         materialDatePicker.addOnNegativeButtonClickListener {
         }
     }
 
     private fun handleLogout() {
-        mAuth.signOut()
+        viewModel.signOut()
         val intent = Intent(activity, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
         activity?.finish()
     }
+
+
+/*****************************************************
+    Handle with camera permission and Image Chooser bitmap
+******************************************************/
+
+    private fun openGallery() {
+        // Check permissions before opening the chooser
+        if (checkPermissions()) {
+            openImageChooser()
+        } else {
+            requestPermissions()
+        }
+    }
+
+    // Check if required permissions are granted
+    private fun checkPermissions(): Boolean {
+        val permissionCamera = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
+        return permissionCamera == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Request required permissions
+    private fun requestPermissions() {
+        requestPermissionLauncher.launch(arrayOf(android.Manifest.permission.CAMERA))
+    }
+
+    // Create the ActivityResultLauncher for picking an image
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            data?.let {
+                val selectedImage: Uri? = it.data
+                if (selectedImage != null) {
+                    // Handle the selected image from the gallery
+                    Picasso.get().load(selectedImage).into(profileImage)
+                } else {
+                    // Handle the camera image
+                    val photo: Bitmap = it.extras?.get("data") as Bitmap
+                    profileImage.setImageBitmap(photo)
+                }
+            }
+        }
+    }
+
+    // Create the ActivityResultLauncher for requesting permissions
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        val allPermissionsGranted = permissions.entries.all { it.value }
+        if (allPermissionsGranted) {
+            openImageChooser()
+        } else {
+            Toast.makeText(context, "Permissions denied, unable to choose image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Open image chooser (camera or gallery)
+    private fun openImageChooser() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+
+        // Create a chooser to allow the user to select between camera and gallery
+        val chooserIntent = Intent.createChooser(galleryIntent, "Select Image").apply {
+            putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
+        }
+
+        pickImageLauncher.launch(chooserIntent)
+    }
+    /*********END***********/
+
 }

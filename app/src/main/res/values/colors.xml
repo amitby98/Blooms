@@ -6,6 +6,8 @@
     <color name="button_blue">#354c88</color>
     <color name="icons_blue">#2a5da4</color>
     <color name="alert_red">#ef888c</color>
+    <color name="alert_green">#BE4CAF50</color>
+
 
     <!-- Bottom BAR -->
     <color name="purple_200">#FFBB86FC</color>

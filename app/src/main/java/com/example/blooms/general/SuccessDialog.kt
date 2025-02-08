@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import com.example.blooms.R
 
-class ErrorDialog(private val context: Context) {
+class SuccessDialog(private val context: Context) {
 
     lateinit var titleText : AppCompatTextView
     lateinit var messageText : AppCompatTextView
@@ -24,7 +24,7 @@ class ErrorDialog(private val context: Context) {
     ) {
         val dialog = Dialog(context)
 
-        val view = LayoutInflater.from(context).inflate(R.layout.general_error_popup, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.general_success_popup, null)
 
         titleText = view.findViewById(R.id.popupTitle)
         messageText = view.findViewById(R.id.popupMessage)
