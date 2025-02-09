@@ -7,15 +7,26 @@
     android:background="@drawable/gradient_background">
 
 <androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/target_title_page"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="ADD NEW TARGET FRAGMENT"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="60dp"
+    android:text="ADD NEW TARGET"
     android:textColor="@color/white"
     android:textSize="20dp"
     android:gravity="center"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"/>
+    app:layout_constraintTop_toTopOf="parent" />
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/target_recycler_category"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/target_title_page"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

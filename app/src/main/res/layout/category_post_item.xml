@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/background_selector"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/circle_selector"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgCategory"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            tools:src="@drawable/fitness_running_icon"
+            android:scaleType="centerInside"/>
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        tools:text="Fitness"
+        android:layout_marginTop="4dp"/>
+
+</LinearLayout>
