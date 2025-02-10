@@ -1,7 +1,8 @@
 package com.example.blooms.model
 
 data class Category(
-    val name: String,
-    val icon: Int,
+    val id: Int = -1,
+    val name: String = "",
+    val icon: Int = -1,
     var isSelected: Boolean = false
 )

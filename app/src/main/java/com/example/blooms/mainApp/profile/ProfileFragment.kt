@@ -22,6 +22,8 @@ import com.example.blooms.auth.MainActivity
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.LoadingDialog
 import com.example.blooms.general.SuccessDialog
+import com.example.blooms.general.showCustomToast
+import com.example.blooms.general.showDatePicker
 import com.example.blooms.mainApp.MainAppActivity
 import com.example.blooms.mainApp.profile.profileViewModel.ProfileState
 import com.example.blooms.mainApp.profile.profileViewModel.ProfileViewModel
@@ -117,7 +119,9 @@ class ProfileFragment : Fragment() {
         }
 
         birthDateInput.setOnClickListener {
-            showDatePicker()
+            showDatePicker { selectedDate ->
+                birthDateInput.setText(selectedDate)
+            }
         }
 
         addImage.setOnClickListener {
@@ -167,9 +171,9 @@ class ProfileFragment : Fragment() {
                     } else {
                         val customPopup = SuccessDialog(requireActivity())
                         customPopup.show(
-                            "איזה כיף...",
-                            "הנתונים נשמרו בהצלחה",
-                            "סגור"
+                            "Success",
+                            "Successfully update your personal information",
+                            "Close"
                         )
                     }
                 }
@@ -179,7 +183,7 @@ class ProfileFragment : Fragment() {
                     customPopup.show(
                         "Oops",
                         state.message,
-                        "TRY AGAIN"
+                        "close"
                     )
                 }
                 is ProfileState.GetUserDataSuccess -> {
@@ -197,10 +201,11 @@ class ProfileFragment : Fragment() {
                     } else {
                         val customPopup = ErrorDialog(requireActivity())
                         customPopup.show(
-                            "אופס",
-                            "משהו השתבש",
-                            "אנא נסה שוב במועד מאוחר יותר"
-                        )                    }
+                            "Oops..",
+                            "Something went wrong, please try again later",
+                            "close"
+                        )
+                    }
                 }
                 else -> {}
             }
@@ -241,7 +246,7 @@ class ProfileFragment : Fragment() {
                         return
                     }
                     if (newPassword.length < 6) {
-                        Toast.makeText(requireContext(), "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                        showCustomToast("Password must be at least 6 characters")
                         return
                     }
 
@@ -285,29 +290,7 @@ class ProfileFragment : Fragment() {
 
 
     private fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showDatePicker() {
-        // Create MaterialDatePicker instance
-        val materialDatePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select Date")
-            .build()
-
-        // Show the Material Date Picker
-        materialDatePicker.show(requireActivity().supportFragmentManager, materialDatePicker.toString())
-
-        // Set listener for when the user selects a date
-        materialDatePicker.addOnPositiveButtonClickListener { selection ->
-            // Format the selected date into a readable format
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val formattedDate = sdf.format(Date(selection))
-
-            birthDateInput.setText(formattedDate)
-        }
-
-        materialDatePicker.addOnNegativeButtonClickListener {
-        }
+        showCustomToast(message = message)
     }
 
     private fun handleLogout() {
@@ -368,7 +351,7 @@ class ProfileFragment : Fragment() {
         if (allPermissionsGranted) {
             openImageChooser()
         } else {
-            Toast.makeText(context, "Permissions denied, unable to choose image", Toast.LENGTH_SHORT).show()
+            showCustomToast( "Permissions denied, unable to choose image")
         }
     }
 

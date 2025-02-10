@@ -16,6 +16,7 @@ import com.example.blooms.R
 import com.example.blooms.auth.authViewModel.AuthState
 import com.example.blooms.auth.authViewModel.AuthViewModel
 import com.example.blooms.general.ErrorDialog
+import com.example.blooms.general.showCustomToast
 import com.example.blooms.mainApp.MainAppActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -79,12 +80,12 @@ class RegisterFragment : Fragment() {
         var isValid = true
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(requireContext(), "Invalid email address", Toast.LENGTH_SHORT).show()
+            showCustomToast( "Invalid email address")
             isValid = false
         }
 
         if (password.isEmpty() || password.length < 6) {
-            Toast.makeText(requireContext(), "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+            showCustomToast( "Password must be at least 6 characters")
             isValid = false
         }
 

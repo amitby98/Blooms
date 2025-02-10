@@ -2,10 +2,9 @@ package com.example.blooms.model
 
 data class Post(
     val userId: String = "",
-    val category: String = "",
+    val categoryId: Int = -1,
     val title: String = "",
-    val body: String = "",
+    val message: String = "",
     val postDateAndTime: String = "",
-    val finishDate: String = "",
-    val postImage: String = ""
+    val deadlineDate: String = "",
 )
