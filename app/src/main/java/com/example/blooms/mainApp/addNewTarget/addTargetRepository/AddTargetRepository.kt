@@ -1,4 +1,4 @@
-package com.example.blooms.mainApp.addTarget.addTargetRepository
+package com.example.blooms.mainApp.addNewTarget.addTargetRepository
 
 import com.example.blooms.model.Post
 import com.google.firebase.database.FirebaseDatabase

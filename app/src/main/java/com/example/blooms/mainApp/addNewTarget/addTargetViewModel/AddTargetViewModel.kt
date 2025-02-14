@@ -1,11 +1,11 @@
-package com.example.blooms.mainApp.addTarget.addTargetViewModel
+package com.example.blooms.mainApp.addNewTarget.addTargetViewModel
 
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.blooms.mainApp.addTarget.addTargetRepository.AddTargetRepository
+import com.example.blooms.mainApp.addNewTarget.addTargetRepository.AddTargetRepository
 import com.example.blooms.model.Post
 import kotlinx.coroutines.launch
 

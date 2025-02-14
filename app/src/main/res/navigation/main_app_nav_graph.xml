@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/addNewTargetFragment"
-        android:name="com.example.blooms.mainApp.addTarget.AddNewTargetFragment"
+        android:name="com.example.blooms.mainApp.addNewTarget.AddNewTargetFragment"
         android:label="AddNewTargetFragment" />
     <fragment
         android:id="@+id/editMyTargetFragment"

@@ -1,4 +1,4 @@
-package com.example.blooms.mainApp.addTarget.addTargetViewModel
+package com.example.blooms.mainApp.addNewTarget.addTargetViewModel
 
 sealed class AddTargetState {
     object Loading : AddTargetState()

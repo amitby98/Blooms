@@ -1,7 +1,6 @@
-package com.example.blooms.mainApp.addTarget
+package com.example.blooms.mainApp.addNewTarget
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,12 +16,9 @@ import com.example.blooms.general.LoadingDialog
 import com.example.blooms.general.SuccessDialog
 import com.example.blooms.general.showCustomToast
 import com.example.blooms.general.showDatePicker
-import com.example.blooms.mainApp.MainAppActivity
-import com.example.blooms.mainApp.addTarget.adapter.CategoryAdapter
-import com.example.blooms.mainApp.addTarget.addTargetViewModel.AddTargetState
-import com.example.blooms.mainApp.addTarget.addTargetViewModel.AddTargetViewModel
-import com.example.blooms.mainApp.profile.profileViewModel.ProfileState
-import com.example.blooms.mainApp.profile.profileViewModel.ProfileViewModel
+import com.example.blooms.mainApp.addNewTarget.adapter.CategoryAdapter
+import com.example.blooms.mainApp.addNewTarget.addTargetViewModel.AddTargetState
+import com.example.blooms.mainApp.addNewTarget.addTargetViewModel.AddTargetViewModel
 import com.example.blooms.model.Category
 import com.example.blooms.model.Post
 import com.google.android.material.button.MaterialButton
