@@ -25,7 +25,11 @@ class ProfileViewModel : ViewModel() {
         viewModelScope.launch {
             repository.getUserData()
                 .onSuccess { user ->
-                    _profileState.value = ProfileState.GetUserDataSuccess(user = user)
+                    user?.let {
+                        _profileState.value = ProfileState.GetUserDataSuccess(user = user)
+                    }.run {
+                        _profileState.value = ProfileState.GetUserDataError("please try again later")
+                    }
                 }
                 .onFailure { exception ->
                     _profileState.value = ProfileState.GetUserDataError(exception.message ?: "")

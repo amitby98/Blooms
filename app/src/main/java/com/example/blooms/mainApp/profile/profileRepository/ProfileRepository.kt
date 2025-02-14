@@ -20,15 +20,11 @@ class ProfileRepository {
     suspend fun getUserData(): Result<User?> =
         withContext(Dispatchers.IO) {
             kotlin.runCatching {
-                Log.d("Firebase", "Fetching data for userId: $userId")
                 val snapshot = userReference.child(userId).get().await()
-                Log.d("Firebase", "Snapshot fetched: ${snapshot.value}")
                 if (snapshot.exists()) {
                     val user = snapshot.getValue(User::class.java)
-                    Log.d("Firebase", "User data: $user")
                     user
                 } else {
-                    Log.d("Firebase", "No data found for userId: $userId")
                     null
                 }
             }
