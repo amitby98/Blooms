@@ -1,13 +1,8 @@
-package com.example.blooms.mainApp.AllMyTarget.allMyTargetRepository
+package com.example.blooms.mainApp.allMyTarget.allMyTargetRepository
 
-import android.util.Log
 import com.example.blooms.model.Post
-import com.example.blooms.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext

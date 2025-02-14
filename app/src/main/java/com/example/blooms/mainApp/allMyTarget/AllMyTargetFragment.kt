@@ -1,4 +1,4 @@
-package com.example.blooms.mainApp.AllMyTarget
+package com.example.blooms.mainApp.allMyTarget
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.blooms.R
-import com.example.blooms.mainApp.AllMyTarget.allMyTargetViewModel.AllMyTargetViewModel
-import com.example.blooms.mainApp.profile.profileViewModel.ProfileViewModel
+import com.example.blooms.mainApp.allMyTarget.allMyTargetViewModel.AllMyTargetViewModel
 
 
 class AllMyTargetFragment : Fragment() {

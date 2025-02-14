@@ -1,4 +1,4 @@
-package com.example.blooms.mainApp.AllMyTarget.allMyTargetViewModel
+package com.example.blooms.mainApp.allMyTarget.allMyTargetViewModel
 
 import com.example.blooms.model.Post
 

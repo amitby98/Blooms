@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.blooms.R
 import com.example.blooms.mainApp.addNewTarget.AddNewTargetFragment
-import com.example.blooms.mainApp.AllMyTarget.AllMyTargetFragment
+import com.example.blooms.mainApp.allMyTarget.AllMyTargetFragment
 import com.example.blooms.mainApp.home.ShowAllTargetFragment
 import com.example.blooms.mainApp.profile.ProfileFragment
 import com.example.blooms.mainApp.settings.SettingsFragment
