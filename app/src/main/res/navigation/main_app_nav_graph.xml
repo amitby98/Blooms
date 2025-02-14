@@ -10,7 +10,7 @@
         android:label="AddNewTargetFragment" />
     <fragment
         android:id="@+id/editMyTargetFragment"
-        android:name="com.example.blooms.mainApp.editMyTarget.EditMyTargetFragment"
+        android:name="com.example.blooms.mainApp.AllMyTarget.AllMyTargetFragment"
         android:label="EditMyTargetFragment" />
     <fragment
         android:id="@+id/profileFragment"

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.blooms.R
 import com.example.blooms.mainApp.addNewTarget.AddNewTargetFragment
-import com.example.blooms.mainApp.editMyTarget.EditMyTargetFragment
+import com.example.blooms.mainApp.AllMyTarget.AllMyTargetFragment
 import com.example.blooms.mainApp.home.ShowAllTargetFragment
 import com.example.blooms.mainApp.profile.ProfileFragment
 import com.example.blooms.mainApp.settings.SettingsFragment
@@ -38,7 +38,7 @@ class MainAppActivity : AppCompatActivity() {
         mBottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> replaceFragment(ShowAllTargetFragment())
-                R.id.search -> replaceFragment(EditMyTargetFragment())
+                R.id.search -> replaceFragment(AllMyTargetFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.settings -> replaceFragment(SettingsFragment())
             }
