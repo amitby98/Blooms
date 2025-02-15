@@ -24,7 +24,7 @@ class AllMyTargetViewModel : ViewModel() {
                     }
                 }
                 .onFailure { exception ->
-                    _allMyTargetState.value = AllMyTargetState.GetAllMyPostError(exception.message ?: "Sign in failed")
+                    _allMyTargetState.value = AllMyTargetState.GetAllMyPostError(exception.message ?: "All My Target Posts failed")
                 }
         }
     }
