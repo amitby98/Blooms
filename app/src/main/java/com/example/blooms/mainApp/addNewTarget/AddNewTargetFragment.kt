@@ -118,7 +118,7 @@ class AddNewTargetFragment : Fragment() {
 
         var newPost = Post(userId = userId , categoryId = categoryId
             , title = newTitle, message = newMessage,
-            deadlineDate = newDeadlineDate, postDateAndTime = getCurrentDateTime())
+            deadlineDate = newDeadlineDate)
 
         loadingDialog.show()
         viewModel.uploadPost(newPost)

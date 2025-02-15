@@ -1,8 +1,11 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.navigation.safe.args.plugin)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -54,6 +57,9 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
     implementation(libs.picasso)
+    implementation(libs.room.runtime)
+    implementation(libs.room)
+    ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
