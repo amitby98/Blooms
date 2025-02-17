@@ -1,6 +1,8 @@
 package com.example.blooms.mainApp.addNewTarget.addTargetViewModel
 
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +12,8 @@ import com.example.blooms.model.Post
 import kotlinx.coroutines.launch
 
 
-class AddTargetViewModel : ViewModel() {
-    private val repository = AddTargetRepository()
+class AddTargetViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository = AddTargetRepository(application)
 
     private val _addTargetState = MutableLiveData<AddTargetState>()
     val addTargetState: LiveData<AddTargetState> = _addTargetState

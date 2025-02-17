@@ -1,6 +1,8 @@
 package com.example.blooms.mainApp.allMyTarget.allMyTargetViewModel
 
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,8 +11,8 @@ import com.example.blooms.mainApp.allMyTarget.allMyTargetRepository.AllMyTargetR
 import kotlinx.coroutines.launch
 
 
-class AllMyTargetViewModel : ViewModel() {
-    private val repository = AllMyTargetRepository()
+class AllMyTargetViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository = AllMyTargetRepository(application)
 
     private val _allMyTargetState = MutableLiveData<AllMyTargetState>()
     val allMyTargetState: LiveData<AllMyTargetState> = _allMyTargetState
@@ -21,6 +23,8 @@ class AllMyTargetViewModel : ViewModel() {
                 .onSuccess { posts ->
                     if (posts.isNotEmpty()) {
                         _allMyTargetState.value = AllMyTargetState.GetAllMyPostSuccess(posts)
+                    } else {
+
                     }
                 }
                 .onFailure { exception ->

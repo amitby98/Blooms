@@ -1,22 +1,23 @@
 package com.example.blooms.mainApp.home.homeViewModel
 
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.blooms.mainApp.allMyTarget.allMyTargetRepository.AllMyTargetRepository
 import com.example.blooms.mainApp.home.homeRepository.HomeRepository
 import kotlinx.coroutines.launch
 
 
-class HomeViewModel : ViewModel() {
-    private val repository = HomeRepository()
+class HomeViewModel(application: Application) : AndroidViewModel(application)  {
+    private val repository = HomeRepository(application)
 
     private val _homeState = MutableLiveData<HomeState>()
     val homeState: LiveData<HomeState> = _homeState
 
-    fun getAllMyTarget() {
+    fun getAllTarget() {
         viewModelScope.launch {
             repository.getAllPosts()
                 .onSuccess { posts ->
