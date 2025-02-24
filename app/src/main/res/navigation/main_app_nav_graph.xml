@@ -2,16 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_app_nav_graph"
-    app:startDestination="@id/addNewTargetFragment">
+    app:startDestination="@id/addNewGoalFragment">
 
     <fragment
-        android:id="@+id/addNewTargetFragment"
-        android:name="com.example.blooms.mainApp.addNewTarget.AddNewTargetFragment"
-        android:label="AddNewTargetFragment" />
+        android:id="@+id/addNewGoalFragment"
+        android:name="com.example.blooms.mainApp.addNewGoal.AddNewGoalFragment"
+        android:label="AddNewGoalFragment" />
     <fragment
-        android:id="@+id/editMyTargetFragment"
-        android:name="com.example.blooms.mainApp.allMyTarget.AllMyTargetFragment"
-        android:label="EditMyTargetFragment" />
+        android:id="@+id/allMyGoalFragment"
+        android:name="com.example.blooms.mainApp.allMyGoal.AllMyGoalFragment"
+        android:label="AllMyGoalFragment" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.blooms.mainApp.profile.ProfileFragment"
@@ -21,7 +21,7 @@
         android:name="com.example.blooms.mainApp.settings.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
-        android:id="@+id/showAllTargetFragment"
-        android:name="com.example.blooms.mainApp.home.ShowAllTargetFragment"
-        android:label="ShowAllTargetFragment" />
+        android:id="@+id/HomeFragment"
+        android:name="com.example.blooms.mainApp.home.HomeFragment"
+        android:label="HomeFragment" />
 </navigation>

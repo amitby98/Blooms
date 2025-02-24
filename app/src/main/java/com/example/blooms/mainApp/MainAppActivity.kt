@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.blooms.R
-import com.example.blooms.mainApp.addNewTarget.AddNewTargetFragment
-import com.example.blooms.mainApp.allMyTarget.AllMyTargetFragment
-import com.example.blooms.mainApp.home.ShowAllTargetFragment
+import com.example.blooms.mainApp.addNewGoal.AddNewGoalFragment
+import com.example.blooms.mainApp.allMyGoal.AllMyGoalFragment
+import com.example.blooms.mainApp.home.HomeFragment
 import com.example.blooms.mainApp.profile.ProfileFragment
 import com.example.blooms.mainApp.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,29 +16,30 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MainAppActivity : AppCompatActivity() {
 
     lateinit var mBottomNavigationView : BottomNavigationView
-    lateinit var mAddTargetBtn : FloatingActionButton
+    lateinit var mAddGoalBtn : FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_app_activity)
         mBottomNavigationView = findViewById(R.id.bottomNavigationView)
-        mAddTargetBtn = findViewById(R.id.addNewTargetBtn)
-        replaceFragment(ShowAllTargetFragment())
+        mAddGoalBtn = findViewById(R.id.addNewGoalBtn)
+        replaceFragment(HomeFragment())
         bottomNavigationItemSelected()
-        initAddNewTargetBtn()
+        initAddNewGoalBtn()
     }
 
-    private fun initAddNewTargetBtn() {
-        mAddTargetBtn.setOnClickListener {
-            replaceFragment(AddNewTargetFragment())
+    private fun initAddNewGoalBtn() {
+        mAddGoalBtn.setOnClickListener {
+            replaceFragment(AddNewGoalFragment())
+            mBottomNavigationView.selectedItemId = R.id.fab
         }
     }
 
     private fun bottomNavigationItemSelected() {
         mBottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home -> replaceFragment(ShowAllTargetFragment())
-                R.id.search -> replaceFragment(AllMyTargetFragment())
+                R.id.home -> replaceFragment(HomeFragment())
+                R.id.search -> replaceFragment(AllMyGoalFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.settings -> replaceFragment(SettingsFragment())
             }

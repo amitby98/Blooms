@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.picasso)
     implementation(libs.room.runtime)
     implementation(libs.room)
+//    implementation(libs.farimarwat)
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)

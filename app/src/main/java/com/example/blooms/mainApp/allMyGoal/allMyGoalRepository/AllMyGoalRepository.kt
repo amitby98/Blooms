@@ -1,4 +1,4 @@
-package com.example.blooms.mainApp.allMyTarget.allMyTargetRepository
+package com.example.blooms.mainApp.allMyGoal.allMyGoalRepository
 
 import android.content.Context
 import com.example.blooms.model.Post
@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class AllMyTargetRepository(context: Context) {
+class AllMyGoalRepository(context: Context) {
 
     private val database = FirebaseDatabase.getInstance().getReference("posts")
     val userId = FirebaseAuth.getInstance().currentUser?.uid

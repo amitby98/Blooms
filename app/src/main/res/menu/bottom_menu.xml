@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_home"/>
     <item
         android:id="@+id/search"
-        android:title="My Target"
+        android:title="My Goals"
         android:icon="@drawable/signpost"/>
     <item
         android:id="@+id/fab"

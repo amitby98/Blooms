@@ -1,7 +1,7 @@
 package com.example.blooms.general
 
 object Constance {
-    /* Category ID - add new target */
+    /* Category ID - add new goal */
     const val FITNESS = 1
     const val ECONOMY = 2
     const val FAMILY = 3

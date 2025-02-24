@@ -1,4 +1,4 @@
-package com.example.blooms.mainApp.addNewTarget.adapter
+package com.example.blooms.mainApp.addNewGoal.adapter
 
 import android.view.LayoutInflater
 import android.view.View

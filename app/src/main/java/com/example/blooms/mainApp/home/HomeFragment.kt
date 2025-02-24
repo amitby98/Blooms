@@ -1,4 +1,4 @@
-package com.example.blooms.mainApp.allMyTarget
+package com.example.blooms.mainApp.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,25 +7,25 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.blooms.R
-import com.example.blooms.mainApp.allMyTarget.allMyTargetViewModel.AllMyTargetViewModel
+import com.example.blooms.mainApp.home.homeViewModel.HomeViewModel
 
 
-class AllMyTargetFragment : Fragment() {
-    private val viewModel: AllMyTargetViewModel by viewModels()
+class HomeFragment : Fragment() {
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_all_my_target, container, false)
-        viewModel.getAllMyTarget()
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        viewModel.getAllPosts()
         return view
     }
 
 
     companion object {
-        fun newInstance() = AllMyTargetFragment()
+        fun newInstance() = HomeFragment()
     }
 
 }

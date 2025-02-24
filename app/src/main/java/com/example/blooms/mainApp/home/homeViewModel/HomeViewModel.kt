@@ -17,7 +17,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
     private val _homeState = MutableLiveData<HomeState>()
     val homeState: LiveData<HomeState> = _homeState
 
-    fun getAllTarget() {
+    fun getAllPosts() {
         viewModelScope.launch {
             repository.getAllPosts()
                 .onSuccess { posts ->
@@ -26,7 +26,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
                     }
                 }
                 .onFailure { exception ->
-                    _homeState.value = HomeState.GetAllPostError(exception.message ?: "All Target Posts failed")
+                    _homeState.value = HomeState.GetAllPostError(exception.message ?: "All Posts failed")
                 }
         }
     }

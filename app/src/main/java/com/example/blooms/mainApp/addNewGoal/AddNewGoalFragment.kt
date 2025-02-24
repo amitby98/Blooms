@@ -1,10 +1,12 @@
-package com.example.blooms.mainApp.addNewTarget
+package com.example.blooms.mainApp.addNewGoal
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,23 +14,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.blooms.R
 import com.example.blooms.general.Constance
 import com.example.blooms.general.ErrorDialog
+import com.example.blooms.general.ImagePickerHelper
 import com.example.blooms.general.LoadingDialog
 import com.example.blooms.general.SuccessDialog
 import com.example.blooms.general.showCustomToast
 import com.example.blooms.general.showDatePicker
-import com.example.blooms.mainApp.addNewTarget.adapter.CategoryAdapter
-import com.example.blooms.mainApp.addNewTarget.addTargetViewModel.AddTargetState
-import com.example.blooms.mainApp.addNewTarget.addTargetViewModel.AddTargetViewModel
+import com.example.blooms.mainApp.addNewGoal.adapter.CategoryAdapter
+import com.example.blooms.mainApp.addNewGoal.addGoalViewModel.AddGoalState
+import com.example.blooms.mainApp.addNewGoal.addGoalViewModel.AddGoalViewModel
+import com.example.blooms.mainApp.addNewGoal.goalStep.GoalsDialog
 import com.example.blooms.model.Category
 import com.example.blooms.model.Post
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class AddNewTargetFragment : Fragment() {
+class AddNewGoalFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CategoryAdapter
@@ -38,8 +43,13 @@ class AddNewTargetFragment : Fragment() {
     private lateinit var mMessageInput : TextInputEditText
     private lateinit var mDeadlineInput : TextInputEditText
     private lateinit var saveButton: MaterialButton
-    private val viewModel: AddTargetViewModel by viewModels()
+    private lateinit var mAddImageBtn: AppCompatButton
+    private lateinit var mAddGoalBtn: AppCompatButton
+    private lateinit var mImagePost: AppCompatImageView
+    private val viewModel: AddGoalViewModel by viewModels()
     private lateinit var loadingDialog: LoadingDialog
+    private lateinit var imagePickerHelper: ImagePickerHelper
+    private var goalList = arrayListOf<String>()
 
 
     override fun onCreateView(
@@ -47,19 +57,37 @@ class AddNewTargetFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_new_target, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_new_goal, container, false)
         initializeViews(view)
         setCategoryList()
         setupClickListeners()
         setupObservers()
+        setImagePickerHelper()
         return view
+    }
+
+    private fun setImagePickerHelper() {
+        imagePickerHelper = ImagePickerHelper(
+            this,
+            onImagePicked = { bitmap, uri ->
+                if (uri != null) {
+                    Picasso.get().load(uri).into(mImagePost)
+                } else if (bitmap != null) {
+                    mImagePost.setImageBitmap(bitmap)
+                }
+                mImagePost.visibility = View.VISIBLE
+            },
+            onPermissionDenied = {
+                showCustomToast("Permissions denied, unable to choose image")
+            }
+        )
     }
 
 
     private fun setupObservers() {
-        viewModel.addTargetState.observe(viewLifecycleOwner) { state ->
+        viewModel.addGoalState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is AddTargetState.UploadPostSuccess -> {
+                is AddGoalState.UploadPostSuccess -> {
                    loadingDialog.dismiss()
                     val customPopup = SuccessDialog(requireActivity())
                     customPopup.show(
@@ -68,7 +96,7 @@ class AddNewTargetFragment : Fragment() {
                         "Close"
                     )
                 }
-                is AddTargetState.UploadPostError -> {
+                is AddGoalState.UploadPostError -> {
                     loadingDialog.dismiss()
                     val customPopup = ErrorDialog(requireActivity())
                     customPopup.show(
@@ -94,6 +122,17 @@ class AddNewTargetFragment : Fragment() {
             if(checkValidation()) {
                 uploadPost()
             }
+        }
+
+        mAddImageBtn.setOnClickListener {
+            imagePickerHelper.openGallery()
+        }
+
+        mAddGoalBtn.setOnClickListener {
+            val dialog = GoalsDialog(goalList,{
+                goalList = it
+            })
+            dialog.show(parentFragmentManager, "GoalDialogFragment")
         }
     }
 
@@ -132,14 +171,15 @@ class AddNewTargetFragment : Fragment() {
     }
 
     private fun initializeViews(view: View) {
-        recyclerView = view.findViewById(R.id.target_recycler_category)
+        recyclerView = view.findViewById(R.id.goal_recycler_category)
         mTitleInput = view.findViewById(R.id.etTitle)
         mMessageInput = view.findViewById(R.id.etBody)
         mDeadlineInput = view.findViewById(R.id.etDeadline)
         saveButton = view.findViewById(R.id.saveButton)
+        mAddImageBtn = view.findViewById(R.id.add_image_btn)
+        mImagePost = view.findViewById(R.id.image_post)
+        mAddGoalBtn = view.findViewById(R.id.add_goal_btn)
         loadingDialog = LoadingDialog(requireContext())
-
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -166,7 +206,6 @@ class AddNewTargetFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = AddNewTargetFragment()
+        fun newInstance() = AddNewGoalFragment()
     }
-
 }
