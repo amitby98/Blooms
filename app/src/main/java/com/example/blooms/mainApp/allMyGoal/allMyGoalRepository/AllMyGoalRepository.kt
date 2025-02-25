@@ -11,9 +11,9 @@ import kotlinx.coroutines.withContext
 
 class AllMyGoalRepository(context: Context) {
 
-    private val database = FirebaseDatabase.getInstance().getReference("posts")
+    private val database = FirebaseDatabase.getInstance().getReference("goals")
     val userId = FirebaseAuth.getInstance().currentUser?.uid
-    private val postDao = AppDatabase.getDatabase(context).postDao()
+    private val goalDao = AppDatabase.getDatabase(context).goalDao()
 
     suspend fun getAllMyPosts() : Result<List<Post>> =
         withContext(Dispatchers.IO) {
@@ -21,7 +21,7 @@ class AllMyGoalRepository(context: Context) {
                 val snapshot = database.orderByChild("userId").equalTo(userId).get().await()
                 if (snapshot.exists()) {
                     val allPosts = snapshot.children.mapNotNull { it.getValue(Post::class.java) }
-                    postDao.insertPosts(allPosts)
+                    //goalDao.insertGoals(allPosts)
                     allPosts
                 } else {
                     emptyList()

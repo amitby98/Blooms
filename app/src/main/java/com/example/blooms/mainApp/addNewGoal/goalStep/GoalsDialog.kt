@@ -10,8 +10,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blooms.R
+import com.example.blooms.general.showCustomToast
+import com.example.blooms.model.GoalStep
 
-class GoalsDialog(private val itemList : ArrayList<String>, private val onListPicked: (ArrayList<String>) -> Unit) : DialogFragment() {
+class GoalsDialog(private val itemList : ArrayList<GoalStep>, private val onListPicked: (ArrayList<GoalStep>) -> Unit) : DialogFragment() {
 
     private lateinit var adapter: GoalStepAdapter
 
@@ -28,10 +30,14 @@ class GoalsDialog(private val itemList : ArrayList<String>, private val onListPi
         recyclerView.adapter = adapter
 
         addButton.setOnClickListener {
-            val text = editText.text.toString()
-            if (text.isNotEmpty()) {
-                adapter.addItem(text)
-                editText.text?.clear()
+            if(itemList.size == 5) {
+                showCustomToast("This is the max goals")
+            } else {
+                val text = editText.text.toString()
+                if (text.isNotEmpty()) {
+                    adapter.addItem(text)
+                    editText.text?.clear()
+                }
             }
         }
 
@@ -41,5 +47,11 @@ class GoalsDialog(private val itemList : ArrayList<String>, private val onListPi
         }
 
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent) // Optional: Transparent background
     }
 }

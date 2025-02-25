@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/black"
     android:padding="16dp">
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -19,7 +20,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:padding="8dp"/>
 
     <androidx.appcompat.widget.AppCompatButton

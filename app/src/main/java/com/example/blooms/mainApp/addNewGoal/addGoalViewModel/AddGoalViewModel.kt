@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.blooms.mainApp.addNewGoal.addGoalRepository.AddGoalRepository
+import com.example.blooms.model.Goal
 import com.example.blooms.model.Post
 import kotlinx.coroutines.launch
 
@@ -17,9 +18,9 @@ class AddGoalViewModel(application: Application) : AndroidViewModel(application)
     private val _addGoalState = MutableLiveData<AddGoalState>()
     val addGoalState: LiveData<AddGoalState> = _addGoalState
 
-    fun uploadPost(post: Post) {
+    fun uploadPost(goal: Goal) {
         viewModelScope.launch {
-            repository.uploadPost(post)
+            repository.uploadGoal(goal)
                 .onSuccess {
                     _addGoalState.value = AddGoalState.UploadPostSuccess
                 }

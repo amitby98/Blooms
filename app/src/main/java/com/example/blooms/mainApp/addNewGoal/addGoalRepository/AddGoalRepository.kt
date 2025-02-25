@@ -1,7 +1,7 @@
 package com.example.blooms.mainApp.addNewGoal.addGoalRepository
 
 import android.content.Context
-import com.example.blooms.model.Post
+import com.example.blooms.model.Goal
 import com.example.blooms.model.dao.AppDatabase
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
@@ -10,21 +10,26 @@ import kotlinx.coroutines.withContext
 class AddGoalRepository(context: Context) {
 
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private val postReference = database.getReference("posts")
+    private val goalReference = database.getReference("goals")
 
-    private val postDao = AppDatabase.getDatabase(context).postDao()
+    private val goalDao = AppDatabase.getDatabase(context).goalDao()
 
     // Generate a unique ID using push()
-    val newPostRef = postReference.push()
-    val postId = newPostRef.key.toString()  // Unique ID
+    var goalId: String? = goalReference.push().getKey()
+    var postId: String? = goalReference.push().getKey()
 
-    suspend fun uploadPost(post: Post): Result<Boolean> =
+    suspend fun uploadGoal(goal: Goal): Result<Boolean> =
         withContext(Dispatchers.IO){
-            post.postId = postId
             kotlin.runCatching {
-                newPostRef.setValue(post)
-                postDao.insertPost(post)
-                true
+                if(goalId.isNullOrEmpty() || postId.isNullOrEmpty()) {
+                    false
+                } else {
+                    goal.goalId = goalId.toString()
+                    goal.posts.get(0).postId = postId.toString()
+                    goalReference.setValue(goal)
+                    goalDao.insertGoal(goal)
+                    true
+                }
             }
         }
 

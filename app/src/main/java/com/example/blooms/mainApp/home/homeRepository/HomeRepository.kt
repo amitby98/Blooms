@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 class HomeRepository(context: Context) {
 
     private val database = FirebaseDatabase.getInstance().getReference("posts")
-    private val postDao = AppDatabase.getDatabase(context).postDao()
+    private val goalDao = AppDatabase.getDatabase(context).goalDao()
 
     suspend fun getAllPosts() : Result<List<Post>> =
         withContext(Dispatchers.IO) {
@@ -20,7 +20,7 @@ class HomeRepository(context: Context) {
                 val snapshot = database.get().await()
                 if (snapshot.exists()) {
                     val allPosts = snapshot.children.mapNotNull { it.getValue(Post::class.java) }
-                    postDao.insertPosts(allPosts)
+                    //postDao.insertPosts(allPosts)
                     allPosts
                 } else {
                     emptyList()

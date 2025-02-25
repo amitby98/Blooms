@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.blooms.model.Post
+import androidx.room.TypeConverters
+import com.example.blooms.model.Goal
 
-@Database(entities = [Post::class], version = 3)
+@Database(entities = [Goal::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun postDao(): PostDao
+    abstract fun goalDao(): GoalDao
 
     companion object {
         @Volatile

@@ -7,14 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.PrimaryKey
 import com.example.blooms.R
 import com.example.blooms.general.Constance
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.ImagePickerHelper
+import com.example.blooms.general.ImageUtils
 import com.example.blooms.general.LoadingDialog
 import com.example.blooms.general.SuccessDialog
 import com.example.blooms.general.showCustomToast
@@ -24,6 +27,8 @@ import com.example.blooms.mainApp.addNewGoal.addGoalViewModel.AddGoalState
 import com.example.blooms.mainApp.addNewGoal.addGoalViewModel.AddGoalViewModel
 import com.example.blooms.mainApp.addNewGoal.goalStep.GoalsDialog
 import com.example.blooms.model.Category
+import com.example.blooms.model.Goal
+import com.example.blooms.model.GoalStep
 import com.example.blooms.model.Post
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -49,7 +54,7 @@ class AddNewGoalFragment : Fragment() {
     private val viewModel: AddGoalViewModel by viewModels()
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var imagePickerHelper: ImagePickerHelper
-    private var goalList = arrayListOf<String>()
+    private var goalList = arrayListOf<GoalStep>()
 
 
     override fun onCreateView(
@@ -120,7 +125,7 @@ class AddNewGoalFragment : Fragment() {
 
         saveButton.setOnClickListener {
             if(checkValidation()) {
-                uploadPost()
+                uploadGoal()
             }
         }
 
@@ -148,26 +153,27 @@ class AddNewGoalFragment : Fragment() {
         return true
     }
 
-    private fun uploadPost() {
+    private fun uploadGoal() {
+
+        //Create first post from our goal
         val newTitle = mTitleInput.text?.toString()?.trim() ?: ""
         val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
+        val bitmap = mImagePost.drawable.toBitmap()
+        val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        var newPost = Post(userId = userId ,title = newTitle, message = newMessage, image = postImageString)
+
         val newDeadlineDate = mDeadlineInput.text?.toString()?.trim() ?: ""
         val categoryId = categorySelected.id
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        val goalStep = goalList
+        val postsList = ArrayList<Post>()
+        postsList.add(newPost)
 
-        var newPost = Post(userId = userId , categoryId = categoryId
-            , title = newTitle, message = newMessage,
-            deadlineDate = newDeadlineDate)
+        val newGoal = Goal(userId = userId, categoryId = categoryId,
+            deadlineDate = newDeadlineDate, posts = postsList, goalStep = goalList )
 
         loadingDialog.show()
-        viewModel.uploadPost(newPost)
-    }
-
-
-    private fun getCurrentDateTime(): String {
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
-        return current.format(formatter)
+        viewModel.uploadPost(newGoal)
     }
 
     private fun initializeViews(view: View) {
