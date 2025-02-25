@@ -26,7 +26,8 @@ class AddGoalRepository(context: Context) {
                 } else {
                     goal.goalId = goalId.toString()
                     goal.posts.get(0).postId = postId.toString()
-                    goalReference.setValue(goal)
+                    // Upload to Firebase as a child of "goals" node
+                    goalReference.child(goal.goalId).setValue(goal)
                     goalDao.insertGoal(goal)
                     true
                 }
