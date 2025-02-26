@@ -34,10 +34,10 @@ class AllMyGoalFragment : Fragment() {
         viewModel.allMyGoalState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AllMyGoalState.Loading -> loadingDialog.show()
-                is AllMyGoalState.GetAllMyPostSuccess -> {
+                is AllMyGoalState.GetAllMyGoalsSuccess -> {
                     loadingDialog.dismiss()
                 }
-                is AllMyGoalState.GetAllMyPostError -> {
+                is AllMyGoalState.GetAllMyGoalsError -> {
                     loadingDialog.dismiss()
                     val errorDialog = ErrorDialog(requireActivity())
                     errorDialog.show(

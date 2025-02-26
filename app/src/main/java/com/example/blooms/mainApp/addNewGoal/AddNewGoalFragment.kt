@@ -156,21 +156,22 @@ class AddNewGoalFragment : Fragment() {
     private fun uploadGoal() {
 
         //Create first post from our goal
-        val newTitle = mTitleInput.text?.toString()?.trim() ?: ""
+        val postTitle = goalList.firstOrNull { it.isChecked }?.text ?: ""
         val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
         val bitmap = mImagePost.drawable.toBitmap()
         val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        var newPost = Post(userId = userId ,title = newTitle, message = newMessage, image = postImageString)
+        var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
 
+        val newTitle = mTitleInput.text?.toString()?.trim() ?: ""
         val newDeadlineDate = mDeadlineInput.text?.toString()?.trim() ?: ""
         val categoryId = categorySelected.id
         val goalStep = goalList
         val postsList = ArrayList<Post>()
         postsList.add(newPost)
 
-        val newGoal = Goal(userId = userId, categoryId = categoryId,
-            deadlineDate = newDeadlineDate, posts = postsList, goalStep = goalList )
+        val newGoal = Goal(userId = userId, title = newTitle, categoryId = categoryId,
+            deadlineDate = newDeadlineDate, posts = postsList, goalStep = goalStep )
 
         loadingDialog.show()
         viewModel.uploadPost(newGoal)

@@ -5,13 +5,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooms.mainApp.allMyGoal.allMyGoalRepository.AllMyGoalRepository
 import kotlinx.coroutines.launch
 
 
-class AllMyGoalViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = AllMyGoalRepository(application)
+class AllMyGoalViewModel : ViewModel() {
+    private val repository = AllMyGoalRepository()
 
     private val _allMyGoalState = MutableLiveData<AllMyGoalState>()
     val allMyGoalState: LiveData<AllMyGoalState> = _allMyGoalState
@@ -19,17 +20,15 @@ class AllMyGoalViewModel(application: Application) : AndroidViewModel(applicatio
     fun getAllMyGoals() {
         _allMyGoalState.value = AllMyGoalState.Loading
         viewModelScope.launch {
-            repository.getAllMyPosts()
-                .onSuccess { posts ->
-                    if (posts.isNotEmpty()) {
-                        _allMyGoalState.value = AllMyGoalState.GetAllMyPostSuccess(posts)
-                    } else {
-
+            repository.getAllMyGoals()
+                .onSuccess { myGoals ->
+                    if (myGoals.isNotEmpty()) {
+                        _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsSuccess(myGoals)
                     }
                 }
                 .onFailure { exception ->
                     //TODO: need to take from ROOM
-                    _allMyGoalState.value = AllMyGoalState.GetAllMyPostError(exception.message ?: "All My Goals Posts failed")
+                    _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsError(exception.message ?: "All My Goals Posts failed")
                 }
         }
     }

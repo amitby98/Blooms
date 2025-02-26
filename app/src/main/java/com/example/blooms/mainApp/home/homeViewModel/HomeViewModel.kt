@@ -5,9 +5,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooms.mainApp.home.homeRepository.HomeRepository
+import com.example.blooms.model.Goal
+import com.example.blooms.model.Post
 import kotlinx.coroutines.launch
 
 
@@ -19,15 +20,28 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
 
     fun getAllPosts() {
         viewModelScope.launch {
-            repository.getAllPosts()
-                .onSuccess { posts ->
-                    if (posts.isNotEmpty()) {
-                        _homeState.value = HomeState.GetAllPostSuccess(posts)
+            repository.getAllGoals()
+                .onSuccess { goals ->
+                    if (goals.isNotEmpty()) {
+                        val allPosts = getAllRelevantPosts(goals)
+                        _homeState.value = HomeState.GetAllPostsSuccess(allPosts)
                     }
                 }
                 .onFailure { exception ->
-                    _homeState.value = HomeState.GetAllPostError(exception.message ?: "All Posts failed")
+                    _homeState.value = HomeState.GetAllGoalsError(exception.message ?: "All Goals failed")
                 }
         }
+    }
+
+
+    private fun getAllRelevantPosts(goalsList : List<Goal>) : ArrayList<Post> {
+        val postsList = arrayListOf<Post>()
+        goalsList.forEach { goal ->
+            val maxPost = goal.posts.maxByOrNull { it.postDateAndTime }
+            maxPost?.let { post ->
+                postsList.add(post)
+            }
+        }
+        return postsList
     }
 }
