@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Error"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_semibold"
             android:textColor="@color/white"
             android:textSize="16sp"/>
 
@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:text="You have failed to complete the trip"
             android:textColor="@color/white"
+            android:fontFamily="@font/poppins_regular"
             android:textSize="14sp"/>
     </LinearLayout>
 </LinearLayout>

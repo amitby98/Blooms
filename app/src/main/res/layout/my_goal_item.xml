@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="190dp"
+    android:layout_height="220dp"
+    android:layout_marginBottom="15dp"
+    android:background="@drawable/rounded_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/goal_share_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:checked="true"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/goal_share_text"
+        android:text = "Share your goal"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/alert_red"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
+        android:textSize="12dp"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/goal_category"
+        android:text = "Category"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_share_text"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="13dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/goal_title"
+        android:text = "Loss 10 KG"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_category"
+        android:layout_marginTop="2dp"
+        android:textSize="16dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <at.grabner.circleprogress.CircleProgressView
+        android:id="@+id/goal_circleProgressView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_title"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        app:cpv_barColor="#519d35"
+        app:cpv_barWidth="15dp"
+        app:cpv_blockCount="5"
+        app:cpv_blockScale="0.96"
+        app:cpv_direction="CW"
+        app:cpv_innerContourSize="0dp"
+        app:cpv_text="2/5"
+        app:cpv_textSize="15dp"
+        app:cpv_textColor="#000000"
+        app:cpv_textScale="3"
+        app:cpv_textMode="Text"
+        app:cpv_maxValue="5"
+        app:cpv_outerContourSize="0dp"
+        app:cpv_rimColor="#D6D6D6"
+        app:cpv_rimWidth="18dp"
+        app:cpv_seekMode="false"
+        app:cpv_showUnit="false"
+        app:cpv_spinColor="#D6D6D6"
+        app:cpv_unit="%"
+        app:cpv_unitScale="1"
+        app:cpv_value="0"
+        tools:cpv_value="6" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/goal_countdownTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_circleProgressView"
+        android:text="00 : 00 : 00"
+        android:textSize="24dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#519d35"
+        android:fontFamily="@font/digib" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room)
     implementation(libs.gson)
-//    implementation(libs.farimarwat)
+    implementation(libs.circle)
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
