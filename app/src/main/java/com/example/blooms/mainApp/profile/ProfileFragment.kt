@@ -36,9 +36,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class ProfileFragment : Fragment() {
 
@@ -228,7 +225,7 @@ class ProfileFragment : Fragment() {
             showToast("Some fields are empty")
             return
         }
-        val userData = User(newName,lastName,birthDate,newEmail, profileImageString)
+        val userData = User(id = currentUser?.uid ?:"" , firstName = newName,lastName =lastName, birthDate = birthDate, email = newEmail, profileImage =profileImageString)
 
         if(!isAfterRegistrationScreen) {
             newEmail = emailInput.text.toString().trim()
