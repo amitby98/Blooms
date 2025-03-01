@@ -10,6 +10,7 @@ data class Goal (
     val userId: String = "",
     val categoryId: Int = -1,
     val deadlineDate: String = "",
+    val shareGoal: Boolean = true,
     val posts: ArrayList<Post> = arrayListOf(),
     val goalStep: ArrayList<GoalStep> = arrayListOf()
 

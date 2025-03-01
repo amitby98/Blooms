@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -51,6 +52,8 @@ class AddNewGoalFragment : Fragment() {
     private lateinit var mAddImageBtn: AppCompatButton
     private lateinit var mAddGoalBtn: AppCompatButton
     private lateinit var mImagePost: AppCompatImageView
+    private lateinit var mShareToggle: SwitchCompat
+
     private val viewModel: AddGoalViewModel by viewModels()
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var imagePickerHelper: ImagePickerHelper
@@ -139,6 +142,7 @@ class AddNewGoalFragment : Fragment() {
             })
             dialog.show(parentFragmentManager, "GoalDialogFragment")
         }
+
     }
 
     private fun checkValidation() : Boolean {
@@ -154,7 +158,6 @@ class AddNewGoalFragment : Fragment() {
     }
 
     private fun uploadGoal() {
-
         //Create first post from our goal
         val postTitle = goalList.firstOrNull { it.isChecked }?.text ?: ""
         val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
@@ -170,7 +173,7 @@ class AddNewGoalFragment : Fragment() {
         val postsList = ArrayList<Post>()
         postsList.add(newPost)
 
-        val newGoal = Goal(userId = userId, title = newTitle, categoryId = categoryId,
+        val newGoal = Goal(userId = userId, title = newTitle, categoryId = categoryId, shareGoal = mShareToggle.isChecked,
             deadlineDate = newDeadlineDate, posts = postsList, goalStep = goalStep )
 
         loadingDialog.show()
@@ -186,6 +189,7 @@ class AddNewGoalFragment : Fragment() {
         mAddImageBtn = view.findViewById(R.id.add_image_btn)
         mImagePost = view.findViewById(R.id.image_post)
         mAddGoalBtn = view.findViewById(R.id.add_goal_btn)
+        mShareToggle = view.findViewById(R.id.goal_share_toggle)
         loadingDialog = LoadingDialog(requireContext())
     }
 
@@ -193,15 +197,7 @@ class AddNewGoalFragment : Fragment() {
     private fun  setCategoryList() {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
 
-        categories = mutableListOf(
-            Category(Constance.FITNESS,"Fitness", R.drawable.fitness_running_icon),
-            Category(Constance.ECONOMY,"Economy", R.drawable.economic),
-            Category(Constance.FAMILY,"Family", R.drawable.family_care_father_mother_icon),
-            Category(Constance.SHOPPING,"Shopping", R.drawable.shopping_bag),
-            Category(Constance.VACATION,"Vacation", R.drawable.vacation),
-            Category(Constance.HEALTH,"Health", R.drawable.health_healthcare_medical_icon),
-            Category(Constance.OTHER,"Other", R.drawable.other_icon)
-        )
+        categories = Constance.categories
 
         adapter = CategoryAdapter(categories) { selectedPosition ->
             categorySelected = categories.get(selectedPosition)
