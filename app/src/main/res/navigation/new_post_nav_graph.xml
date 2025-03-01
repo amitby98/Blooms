@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_app_nav_graph"
+    app:startDestination="@id/addNewPostStep1Fragment">
+    <fragment
+        android:id="@+id/addNewPostStep1Fragment"
+        android:name="com.example.blooms.addNewPost.step1.AddNewPostStep1Fragment"
+        android:label="fragment_add_new_post_step1"
+        tools:layout="@layout/fragment_add_new_post_step1" >
+        <action
+            android:id="@+id/action_addNewPostStep1Fragment_to_addNewPostStep2Fragment"
+            app:destination="@id/addNewPostStep2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNewPostStep2Fragment"
+        android:name="com.example.blooms.addNewPost.step2.AddNewPostStep2Fragment"
+        android:label="fragment_add_new_post_step2"
+        tools:layout="@layout/fragment_add_new_post_step2" >
+        <action
+            android:id="@+id/action_addNewPostStep2Fragment_to_addNewPostStep1Fragment"
+            app:destination="@id/addNewPostStep1Fragment" />
+    </fragment>
+</navigation>

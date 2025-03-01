@@ -21,7 +21,7 @@ import java.time.temporal.ChronoUnit
 
 
 class AllMyGoalsAdapter(private val context: Context
-, private val goals: List<Goal>, private val onItemClick: (Int) -> Unit ) :
+, private val goals: List<Goal>, private val onItemClick: (Goal) -> Unit ) :
         RecyclerView.Adapter<AllMyGoalsAdapter.GridViewHolder>() {
 
         class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -43,7 +43,7 @@ class AllMyGoalsAdapter(private val context: Context
         override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
             val item = goals[position]
             holder.itemView.setOnClickListener {
-                onItemClick.invoke(position)
+                onItemClick.invoke(item)
             }
 
             holder.shareToggle.isChecked = item.shareGoal

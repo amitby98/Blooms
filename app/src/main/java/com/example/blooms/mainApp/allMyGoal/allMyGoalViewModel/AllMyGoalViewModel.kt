@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.blooms.mainApp.allMyGoal.allMyGoalRepository.AllMyGoalRepository
+import com.example.blooms.mainApp.profile.profileViewModel.ProfileState
 import kotlinx.coroutines.launch
 
 
@@ -18,7 +19,6 @@ class AllMyGoalViewModel : ViewModel() {
     val allMyGoalState: LiveData<AllMyGoalState> = _allMyGoalState
 
     fun getAllMyGoals() {
-        _allMyGoalState.value = AllMyGoalState.Loading
         viewModelScope.launch {
             repository.getAllMyGoals()
                 .onSuccess { myGoals ->
@@ -29,6 +29,24 @@ class AllMyGoalViewModel : ViewModel() {
                 .onFailure { exception ->
                     //TODO: need to take from ROOM
                     _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsError(exception.message ?: "All My Goals Posts failed")
+                }
+        }
+    }
+
+    fun getUserData() {
+        _allMyGoalState.value = AllMyGoalState.Loading
+        viewModelScope.launch {
+            repository.getUserData()
+                .onSuccess { user ->
+                    user?.let {
+                        _allMyGoalState.value = AllMyGoalState.GetUserDataSuccess(user = user)
+                        getAllMyGoals()
+                    }.run {
+                        getAllMyGoals()
+                    }
+                }
+                .onFailure { exception ->
+                    getAllMyGoals()
                 }
         }
     }

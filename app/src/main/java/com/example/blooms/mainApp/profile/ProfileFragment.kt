@@ -55,8 +55,6 @@ class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModels()
     private var isAfterRegistrationScreen = false
     private lateinit var loadingDialog: LoadingDialog
-    private var imageUri: Uri? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

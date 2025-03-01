@@ -2,6 +2,7 @@ package com.example.blooms.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "goals")
 data class Goal (
@@ -14,4 +15,4 @@ data class Goal (
     val posts: ArrayList<Post> = arrayListOf(),
     val goalStep: ArrayList<GoalStep> = arrayListOf()
 
-)
+) : Serializable

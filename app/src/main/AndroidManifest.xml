@@ -33,6 +33,9 @@
             android:name=".mainApp.MainAppActivity"
             android:exported="false" />
 
+        <activity android:name=".addNewPost.AddNewPostActivity"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
