@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,10 +21,10 @@ class GoalsDialog(private val itemList : ArrayList<GoalStep>, private val onList
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.goal_dialog, container, false)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        val editText : AppCompatEditText = view.findViewById(R.id.editText)
-        val addButton : AppCompatButton = view.findViewById(R.id.addButton)
-        val okButton : AppCompatButton = view.findViewById(R.id.okButton)
+        val recyclerView: RecyclerView = view.findViewById(R.id.goal_step_add_step_line_recyclerview)
+        val editText : AppCompatEditText = view.findViewById(R.id.goal_step_add_step_edit_text)
+        val addButton : AppCompatImageView = view.findViewById(R.id.goal_step_add_step_add_button)
+        val okButton : AppCompatButton = view.findViewById(R.id.add_new_post_step1_continue_btn)
 
         adapter = GoalStepAdapter(itemList)
         recyclerView.layoutManager = LinearLayoutManager(context)

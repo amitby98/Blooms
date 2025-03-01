@@ -1,31 +1,81 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@color/black"
+    android:background="@drawable/gradient_background"
     android:padding="16dp">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/goal_step_add_step_input_text"
+        style="@style/ProfileTextInputLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter text" />
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/goal_step_add_step_add_button"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/goal_step_add_step_edit_text"
+            style="@style/ProfileEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:hint="Add Step"
+            android:inputType="textPersonName"
+            android:fontFamily="@font/poppins_regular"
+            tools:text="Running 10 KM"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/goal_step_add_step_add_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_add"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/goal_step_add_step_input_text"/>
+
+        <View
+            android:id="@+id/goal_step_add_step_line_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            android:layout_marginTop="20dp"
+            android:alpha="0.6"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goal_step_add_step_add_button"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/goal_step_add_step_line_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_step_add_step_line_view"
         android:padding="8dp"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/okButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OK" />
-</LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_new_post_step1_continue_btn"
+        style="@style/BloomsButton"
+        android:layout_marginTop="80dp"
+        android:text="Done"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+<!--    -->
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/okButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="OK" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

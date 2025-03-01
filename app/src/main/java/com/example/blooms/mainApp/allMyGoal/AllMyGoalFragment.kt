@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blooms.R
 import com.example.blooms.addNewPost.AddNewPostActivity
+import com.example.blooms.general.Constance.ADD_NEW_POST_FROM_GOAL
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.ImageUtils
 import com.example.blooms.general.LoadingDialog
@@ -96,8 +97,8 @@ class AllMyGoalFragment : Fragment() {
 
     private fun addNewPost(goal: Goal) {
         val intent = Intent(requireContext(), AddNewPostActivity::class.java)
-        intent.putExtra("MY_GOAL", goal)
-        launcher?.launch(intent)
+        intent.putExtra(ADD_NEW_POST_FROM_GOAL, goal)
+        launcher.launch(intent)
     }
 
 }

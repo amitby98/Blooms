@@ -1,18 +1,14 @@
 package com.example.blooms.addNewPost
 
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.Navigation.findNavController
 import com.example.blooms.R
-import com.example.blooms.mainApp.addNewGoal.AddNewGoalFragment
-import com.example.blooms.mainApp.allMyGoal.AllMyGoalFragment
-import com.example.blooms.mainApp.home.HomeFragment
-import com.example.blooms.mainApp.profile.ProfileFragment
-import com.example.blooms.mainApp.settings.SettingsFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.blooms.addNewPost.step1.AddNewPostStep1FragmentDirections
+import com.example.blooms.general.Constance.ADD_NEW_POST_FROM_GOAL
+import com.example.blooms.model.Goal
 
 
 class AddNewPostActivity : AppCompatActivity() {
@@ -22,15 +18,27 @@ class AddNewPostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_post)
-        // Obtain reference to the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.add_new_post_nav_host_fragment) as NavHostFragment
-        // Get the NavController
-        navController = navHostFragment.navController
+        navController = findNavController(this, R.id.add_new_post_nav_host_fragment)
+
+        // Retrieve the Goal object from the intent
+        val goal = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra(ADD_NEW_POST_FROM_GOAL, Goal::class.java)
+        } else {
+            intent.getSerializableExtra(ADD_NEW_POST_FROM_GOAL) as Goal
+        }
+
+        goal?.let {
+            // Pass the Goal object to the fragment via Safe Args
+            val action = AddNewPostStep1FragmentDirections.actionAddNewPostActivityToAddNewPostFragment(goal)
+            navController.navigate(action)
+        }.run {
+            //TODO: Show error
+        }
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-    // todo: add back support
 }

@@ -5,16 +5,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.example.blooms.R
+import com.example.blooms.addNewPost.step1.AddNewPostStep1FragmentArgs
+import com.example.blooms.general.ImagePickerHelper
+import com.example.blooms.general.ImageUtils
+import com.example.blooms.general.showCustomToast
+import com.example.blooms.model.Goal
+import com.example.blooms.model.Post
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 
 class AddNewPostStep2Fragment : Fragment() {
 
     private lateinit var mCloseBtn: AppCompatImageView
     private lateinit var mBackBtn: AppCompatImageView
+    private lateinit var mTitleInput : TextInputEditText
+    private lateinit var mMessageInput : TextInputEditText
+    private lateinit var mImageButton: AppCompatImageView
+    private lateinit var mImagePost: AppCompatImageView
+    private lateinit var imagePickerHelper: ImagePickerHelper
+    private lateinit var mUpdateButton: MaterialButton
+    //var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
+
+    private var mPositionChange: Int = -1
+    private lateinit var mGoal : Goal
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,11 +48,42 @@ class AddNewPostStep2Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViews(view)
+        setImagePickerHelper()
+        try {
+            // Retrieve the Goal object passed from the Activity
+            if (arguments != null) {
+                val args = AddNewPostStep2FragmentArgs.fromBundle(requireArguments())
+                mPositionChange = args.position
+                mGoal = args.goal
+                mTitleInput.setText(mGoal.goalStep.get(mPositionChange).text)
+            }
+        }catch (_:Exception) {
+
+        }
     }
 
     private fun initializeViews(view: View) {
         mCloseBtn = view.findViewById(R.id.add_new_post_step2_close_btn)
         mBackBtn = view.findViewById(R.id.add_new_post_step2_back_btn)
+        mTitleInput = view.findViewById(R.id.add_new_post_step2_title_input_edit_text)
+        mMessageInput = view.findViewById(R.id.add_new_post_step2_body_input_edit_text)
+        mImageButton = view.findViewById(R.id.add_new_post_step2_camera_button)
+        mImagePost = view.findViewById(R.id.add_new_post_step2_image_view)
+        mUpdateButton = view.findViewById(R.id.add_new_post_step2_update_button)
+
+        mUpdateButton.setOnClickListener {
+            val postTitle = mTitleInput.text?.toString()?.trim() ?: ""
+            val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
+            val bitmap = mImagePost.drawable.toBitmap()
+            val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
+            mGoal.posts.add(newPost)
+        }
+
+        mImageButton.setOnClickListener {
+            imagePickerHelper.openGallery()
+        }
 
         mCloseBtn.setOnClickListener {
             requireActivity().setResult(android.app.Activity.RESULT_CANCELED)
@@ -41,6 +94,23 @@ class AddNewPostStep2Fragment : Fragment() {
             findNavController().navigate(R.id.action_addNewPostStep2Fragment_to_addNewPostStep1Fragment)
         }
 
+    }
+
+    private fun setImagePickerHelper() {
+        imagePickerHelper = ImagePickerHelper(
+            this,
+            onImagePicked = { bitmap, uri ->
+                if (uri != null) {
+                    Picasso.get().load(uri).into(mImagePost)
+                } else if (bitmap != null) {
+                    mImagePost.setImageBitmap(bitmap)
+                }
+                mImagePost.visibility = View.VISIBLE
+            },
+            onPermissionDenied = {
+                showCustomToast("Permissions denied, unable to choose image")
+            }
+        )
     }
 
 }

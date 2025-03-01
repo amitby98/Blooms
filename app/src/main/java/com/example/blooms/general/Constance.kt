@@ -23,4 +23,8 @@ object Constance {
         Category(HEALTH, "Health", R.drawable.health_healthcare_medical_icon),
         Category(OTHER, "Other", R.drawable.other_icon)
     )
+
+    /*Const Key*/
+    const val ADD_NEW_POST_FROM_GOAL = "ADD_NEW_POST_FROM_GOAL"
+
 }
