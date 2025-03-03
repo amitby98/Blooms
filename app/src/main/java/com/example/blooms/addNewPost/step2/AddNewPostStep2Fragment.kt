@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.blooms.R
 import com.example.blooms.addNewPost.step1.AddNewPostStep1FragmentArgs
+import com.example.blooms.addNewPost.step2.addNewPostStep2ViewModel.AddNewPostStep2ViewModel
 import com.example.blooms.general.ImagePickerHelper
 import com.example.blooms.general.ImageUtils
 import com.example.blooms.general.showCustomToast
+import com.example.blooms.mainApp.addNewGoal.addGoalViewModel.AddGoalViewModel
 import com.example.blooms.model.Goal
 import com.example.blooms.model.Post
 import com.google.android.material.button.MaterialButton
@@ -32,7 +35,7 @@ class AddNewPostStep2Fragment : Fragment() {
     private lateinit var mImagePost: AppCompatImageView
     private lateinit var imagePickerHelper: ImagePickerHelper
     private lateinit var mUpdateButton: MaterialButton
-    //var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
+    private val viewModel: AddNewPostStep2ViewModel by viewModels()
 
     private var mPositionChange: Int = -1
     private lateinit var mGoal : Goal
@@ -79,6 +82,7 @@ class AddNewPostStep2Fragment : Fragment() {
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
             mGoal.posts.add(newPost)
+            viewModel.uploadPost(mGoal, mGoal.posts.lastIndex)
         }
 
         mImageButton.setOnClickListener {
