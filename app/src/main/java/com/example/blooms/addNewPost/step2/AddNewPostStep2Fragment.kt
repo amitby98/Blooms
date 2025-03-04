@@ -12,11 +12,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.blooms.R
 import com.example.blooms.addNewPost.step1.AddNewPostStep1FragmentArgs
+import com.example.blooms.addNewPost.step2.addNewPostStep2ViewModel.AddNewPostStep2State
 import com.example.blooms.addNewPost.step2.addNewPostStep2ViewModel.AddNewPostStep2ViewModel
+import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.ImagePickerHelper
 import com.example.blooms.general.ImageUtils
+import com.example.blooms.general.LoadingDialog
+import com.example.blooms.general.SuccessDialog
 import com.example.blooms.general.showCustomToast
 import com.example.blooms.mainApp.addNewGoal.addGoalViewModel.AddGoalViewModel
+import com.example.blooms.mainApp.allMyGoal.allMyGoalViewModel.AllMyGoalState
 import com.example.blooms.model.Goal
 import com.example.blooms.model.Post
 import com.google.android.material.button.MaterialButton
@@ -36,6 +41,7 @@ class AddNewPostStep2Fragment : Fragment() {
     private lateinit var imagePickerHelper: ImagePickerHelper
     private lateinit var mUpdateButton: MaterialButton
     private val viewModel: AddNewPostStep2ViewModel by viewModels()
+    private lateinit var loadingDialog: LoadingDialog
 
     private var mPositionChange: Int = -1
     private lateinit var mGoal : Goal
@@ -52,6 +58,7 @@ class AddNewPostStep2Fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initializeViews(view)
         setImagePickerHelper()
+        setupObservers()
         try {
             // Retrieve the Goal object passed from the Activity
             if (arguments != null) {
@@ -66,6 +73,7 @@ class AddNewPostStep2Fragment : Fragment() {
     }
 
     private fun initializeViews(view: View) {
+        loadingDialog = LoadingDialog(requireContext())
         mCloseBtn = view.findViewById(R.id.add_new_post_step2_close_btn)
         mBackBtn = view.findViewById(R.id.add_new_post_step2_back_btn)
         mTitleInput = view.findViewById(R.id.add_new_post_step2_title_input_edit_text)
@@ -75,14 +83,7 @@ class AddNewPostStep2Fragment : Fragment() {
         mUpdateButton = view.findViewById(R.id.add_new_post_step2_update_button)
 
         mUpdateButton.setOnClickListener {
-            val postTitle = mTitleInput.text?.toString()?.trim() ?: ""
-            val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
-            val bitmap = mImagePost.drawable.toBitmap()
-            val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
-            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-            var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
-            mGoal.posts.add(newPost)
-            viewModel.uploadPost(mGoal, mGoal.posts.lastIndex)
+            updateGoal()
         }
 
         mImageButton.setOnClickListener {
@@ -99,6 +100,51 @@ class AddNewPostStep2Fragment : Fragment() {
         }
 
     }
+
+    private fun updateGoal() {
+        val postTitle = mTitleInput.text?.toString()?.trim() ?: ""
+        val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
+        val bitmap = mImagePost.drawable.toBitmap()
+        val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
+        mGoal.posts.add(newPost)
+        viewModel.uploadPost(mGoal, mGoal.posts.lastIndex)
+    }
+
+    private fun setupObservers() {
+        viewModel.addNewPostStep2State.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is AddNewPostStep2State.Loading -> loadingDialog.show()
+                is AddNewPostStep2State.UpdatePostSuccess -> {
+                    loadingDialog.dismiss()
+                    val customPopup = SuccessDialog(requireActivity())
+                    customPopup.show(
+                        "Success",
+                        "Your post has been sent to followers",
+                        "Close",
+                        onButtonClick = {
+                            requireActivity().setResult(android.app.Activity.RESULT_OK)
+                            requireActivity().finish()
+                        }
+                    )
+
+                }
+                is AddNewPostStep2State.UpdatePostError -> {
+                    loadingDialog.dismiss()
+                    val errorDialog = ErrorDialog(requireActivity())
+                    errorDialog.show(
+                        "Oops",
+                        state.message,
+                        "close"
+                    )
+                }
+
+                else -> {}
+            }
+        }
+    }
+
 
     private fun setImagePickerHelper() {
         imagePickerHelper = ImagePickerHelper(

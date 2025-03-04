@@ -20,6 +20,7 @@ class AddNewPostStep2ViewModel(application: Application) : AndroidViewModel(appl
     val addNewPostStep2State: LiveData<AddNewPostStep2State> = _addNewPostStep2State
 
     fun uploadPost(goal: Goal, postPosition: Int) {
+        _addNewPostStep2State.value = AddNewPostStep2State.Loading
         viewModelScope.launch {
             repository.updateGoal(goal,postPosition)
                 .onSuccess {
