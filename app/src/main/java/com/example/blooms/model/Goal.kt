@@ -13,6 +13,8 @@ data class Goal (
     val deadlineDate: String = "",
     val shareGoal: Boolean = true,
     val posts: ArrayList<Post> = arrayListOf(),
-    val goalStep: ArrayList<GoalStep> = arrayListOf()
+    val goalStep: ArrayList<GoalStep> = arrayListOf(),
+    var userImage: String = "",
+    var userName: String = ""
 
 ) : Serializable

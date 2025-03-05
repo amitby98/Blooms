@@ -177,7 +177,7 @@ class AddNewGoalFragment : Fragment() {
             deadlineDate = newDeadlineDate, posts = postsList, goalStep = goalStep )
 
         loadingDialog.show()
-        viewModel.uploadPost(newGoal)
+        viewModel.getUserData(newGoal)
     }
 
     private fun initializeViews(view: View) {

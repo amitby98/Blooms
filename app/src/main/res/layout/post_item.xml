@@ -79,7 +79,17 @@
         android:layout_marginTop="2dp"
         android:textColor="@color/black"
         android:inputType="textMultiLine"
-        tools:text="bla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla bla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blablabla bla bla bla"/>
+        tools:text="bla bla bla blabla bla bla blabla bla bla blabla bla bla blabla bla bla blabla"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/post_image"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_message"/>
 
     <View
         android:layout_width="match_parent"
@@ -87,5 +97,5 @@
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_message"/>
+        app:layout_constraintTop_toBottomOf="@+id/post_image"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

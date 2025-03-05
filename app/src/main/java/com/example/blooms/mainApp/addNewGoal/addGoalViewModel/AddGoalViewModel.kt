@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.blooms.mainApp.addNewGoal.addGoalRepository.AddGoalRepository
 import com.example.blooms.model.Goal
-import com.example.blooms.model.Post
+import com.example.blooms.model.User
 import kotlinx.coroutines.launch
 
 
@@ -18,7 +18,7 @@ class AddGoalViewModel(application: Application) : AndroidViewModel(application)
     private val _addGoalState = MutableLiveData<AddGoalState>()
     val addGoalState: LiveData<AddGoalState> = _addGoalState
 
-    fun uploadPost(goal: Goal) {
+    fun addNewGoal(goal: Goal) {
         viewModelScope.launch {
             repository.uploadGoal(goal)
                 .onSuccess {
@@ -29,4 +29,30 @@ class AddGoalViewModel(application: Application) : AndroidViewModel(application)
                 }
         }
     }
+
+
+    fun getUserData(goal: Goal) {
+        viewModelScope.launch {
+            repository.getUserData()
+                .onSuccess { user ->
+                    user?.let {
+                        var goalUpdate  = updateGoalWithUserData(goal, user)
+                        addNewGoal(goalUpdate)
+                    }.run {
+                        addNewGoal(goal)
+                    }
+                }
+                .onFailure { exception ->
+                    addNewGoal(goal)
+                }
+        }
+    }
+
+    private fun updateGoalWithUserData(goal: Goal, userData: User): Goal {
+        goal.userImage = userData.profileImage
+        goal.userName = "$userData.firstName $userData.lastName"
+        return goal
+    }
+
+
 }
