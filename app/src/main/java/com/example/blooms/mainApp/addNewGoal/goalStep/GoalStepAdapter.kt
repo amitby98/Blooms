@@ -1,15 +1,22 @@
 package com.example.blooms.mainApp.addNewGoal.goalStep
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blooms.R
+import com.example.blooms.general.Constance
 import com.example.blooms.model.GoalStep
 
-class GoalStepAdapter(private val itemList: ArrayList<GoalStep>) :
+
+class GoalStepAdapter(private val context: Context, private val itemList: ArrayList<GoalStep>) :
     RecyclerView.Adapter<GoalStepAdapter.ViewHolder>() {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION  // Track selected row
@@ -17,6 +24,7 @@ class GoalStepAdapter(private val itemList: ArrayList<GoalStep>) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mItemText: AppCompatTextView = itemView.findViewById(R.id.item_goal_text)
         val mItemCheckbox: AppCompatCheckBox = itemView.findViewById(R.id.item_goal_checkbox)
+        val mImage: AppCompatImageView = itemView.findViewById(R.id.image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +39,11 @@ class GoalStepAdapter(private val itemList: ArrayList<GoalStep>) :
         // Set checkbox state and enable/disable checkboxes based on selection
         holder.mItemCheckbox.isChecked = goalStep.isChecked
         holder.mItemCheckbox.isEnabled = position == selectedPosition || selectedPosition == RecyclerView.NO_POSITION
-
+        var drawable = ContextCompat.getDrawable(context, com.example.blooms.R.drawable.ic_target)
+        Constance.targets.get(position)?.let {
+            drawable = ContextCompat.getDrawable(context, it)
+        }
+        holder.mImage.setImageDrawable(drawable)
         holder.mItemText.text = goalStep.text
         // Handle checkbox clicks
         holder.mItemCheckbox.setOnClickListener {

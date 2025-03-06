@@ -24,6 +24,13 @@ object Constance {
         Category(OTHER, "Other", R.drawable.other_icon)
     )
 
+    val targets = hashMapOf(
+        0 to R.drawable.ic_1,
+        1 to R.drawable.ic_2,
+        2 to R.drawable.ic_3,
+        3 to R.drawable.ic_4,
+        4 to R.drawable.ic_5)
+
     /*Const Key*/
     const val ADD_NEW_POST_FROM_GOAL = "ADD_NEW_POST_FROM_GOAL"
 

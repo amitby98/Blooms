@@ -50,7 +50,7 @@ class AddGoalViewModel(application: Application) : AndroidViewModel(application)
 
     private fun updateGoalWithUserData(goal: Goal, userData: User): Goal {
         goal.userImage = userData.profileImage
-        goal.userName = "$userData.firstName $userData.lastName"
+        goal.userName = userData.firstName + " " + userData.lastName
         return goal
     }
 

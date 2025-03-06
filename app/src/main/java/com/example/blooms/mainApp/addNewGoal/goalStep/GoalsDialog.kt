@@ -26,7 +26,7 @@ class GoalsDialog(private val itemList : ArrayList<GoalStep>, private val onList
         val addButton : AppCompatImageView = view.findViewById(R.id.goal_step_add_step_add_button)
         val okButton : AppCompatButton = view.findViewById(R.id.add_new_post_step1_continue_btn)
 
-        adapter = GoalStepAdapter(itemList)
+        adapter = GoalStepAdapter(requireContext(), itemList)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
