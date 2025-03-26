@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,6 +17,8 @@ import com.example.blooms.R
 import com.example.blooms.auth.authViewModel.AuthState
 import com.example.blooms.auth.authViewModel.AuthViewModel
 import com.example.blooms.general.ErrorDialog
+import com.example.blooms.general.REMEMBER_MY_LOGIN
+import com.example.blooms.general.SharedPrefsHelper
 import com.example.blooms.general.showCustomToast
 import com.example.blooms.mainApp.MainAppActivity
 import com.google.android.material.button.MaterialButton
@@ -28,6 +31,7 @@ class LoginFragment : Fragment() {
     private lateinit var mUsername: TextInputEditText
     private lateinit var mPassword: TextInputEditText
     private lateinit var mLoginButton: MaterialButton
+    private lateinit var mRememberMeCheckBox: AppCompatCheckBox
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
@@ -51,6 +55,11 @@ class LoginFragment : Fragment() {
             when (state) {
                 is AuthState.Loading -> {}
                 is AuthState.Success -> {
+                    if(mRememberMeCheckBox.isChecked) {
+                        SharedPrefsHelper(requireContext()).save(REMEMBER_MY_LOGIN, true)
+                    } else {
+                        SharedPrefsHelper(requireContext()).save(REMEMBER_MY_LOGIN, false)
+                    }
                     activity?.startActivity(Intent(requireActivity(), MainAppActivity::class.java))
                 }
                 is AuthState.Error -> {
@@ -72,6 +81,7 @@ class LoginFragment : Fragment() {
         mUsername = view.findViewById(R.id.usernameEditText)
         mPassword = view.findViewById(R.id.passwordEditText)
         mLoginButton = view.findViewById(R.id.loginButton)
+        mRememberMeCheckBox = view.findViewById(R.id.rememberMeCheckbox)
     }
 
     private fun setupClickListeners() {

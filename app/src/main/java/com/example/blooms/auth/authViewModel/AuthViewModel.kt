@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.blooms.auth.authRepository.AuthRepository
 import kotlinx.coroutines.launch
 
-class AuthViewModel() : ViewModel() {
+class AuthViewModel : ViewModel() {
     private val repository = AuthRepository()
 
     private val _authState = MutableLiveData<AuthState>()
@@ -50,5 +50,10 @@ class AuthViewModel() : ViewModel() {
     fun signOut() {
         repository.signOut()
         _authState.value = AuthState.Idle
+    }
+
+    fun getCurrentUser() : Boolean {
+        val user = repository.getCurrentUser()
+        return user != null
     }
 }
