@@ -1,5 +1,6 @@
 package com.example.blooms.auth.authViewModel
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -55,5 +56,22 @@ class AuthViewModel : ViewModel() {
     fun getCurrentUser() : Boolean {
         val user = repository.getCurrentUser()
         return user != null
+    }
+
+    fun validateInput(email: String, password: String): Pair<Boolean, String> {
+        var isValid = true
+        var errorText = ""
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            errorText = "Invalid email address"
+            isValid = false
+        }
+
+        if (password.isEmpty() || password.length < 6) {
+            errorText = "Password must be at least 6 characters"
+            isValid = false
+        }
+
+        return Pair(isValid, errorText)
     }
 }
