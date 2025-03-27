@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background">
+    android:background="@color/second_white">
 
 <androidx.appcompat.widget.AppCompatTextView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:text="SETTINGS FRAGMENT"
-    android:textColor="@color/white"
+    android:textColor="@color/icons_blue"
     android:textSize="20dp"
     android:gravity="center"
     app:layout_constraintRight_toRightOf="parent"
