@@ -1,90 +1,128 @@
 package com.example.blooms.mainApp.allMyGoal.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import at.grabner.circleprogress.CircleProgressView
 import com.example.blooms.R
 import com.example.blooms.general.Constance
 import com.example.blooms.model.Category
 import com.example.blooms.model.Goal
 import com.example.blooms.model.GoalStep
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.time.LocalDate
-import java.time.Period
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
+class AllMyGoalsAdapter(
+    private val context: Context,
+    private val goals: List<Goal>,
+    private val onItemClick: (Goal) -> Unit
+) : RecyclerView.Adapter<AllMyGoalsAdapter.GridViewHolder>() {
 
-class AllMyGoalsAdapter(private val context: Context
-, private val goals: List<Goal>, private val onItemClick: (Goal) -> Unit ) :
-        RecyclerView.Adapter<AllMyGoalsAdapter.GridViewHolder>() {
+    private val countdownTimers = mutableMapOf<Int, CountDownTimer>()
 
-        class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val shareToggle: SwitchCompat = view.findViewById(R.id.goal_share_toggle)
-            val category: AppCompatTextView = view.findViewById(R.id.goal_category)
-            val title: AppCompatTextView = view.findViewById(R.id.goal_title)
-            val circleProgressView : CircleProgressView = view.findViewById(R.id.goal_circleProgressView)
-            val countdown: AppCompatTextView = view.findViewById(R.id.goal_countdownTextView)
+    class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val shareToggle: SwitchCompat = view.findViewById(R.id.goal_share_toggle)
+        val category: AppCompatTextView = view.findViewById(R.id.goal_category)
+        val title: AppCompatTextView = view.findViewById(R.id.goal_title)
+        val progressBar: LinearProgressIndicator = view.findViewById(R.id.goal_progress_bar)
+        val countdown: AppCompatTextView = view.findViewById(R.id.goal_countdownTextView)
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_goal_item, parent, false)
+        return GridViewHolder(view)
+    }
 
+    override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
+        val item = goals[position]
+        countdownTimers[position]?.cancel()
+        val timer = createCountdownTimer(item.deadlineDate, holder.countdown)
+        timer.start()
+        countdownTimers[position] = timer
+
+        // Rest of the existing code
+        holder.itemView.setOnClickListener {
+            onItemClick.invoke(item)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.my_goal_item, parent, false)
-            return GridViewHolder(view)
+        holder.shareToggle.isChecked = item.shareGoal
+        holder.category.text = getCategoryById(item.categoryId)?.name ?: ""
+        holder.title.text = item.title
+        setProgressBar(holder.progressBar, item.goalStep)
+    }
+
+    private fun createCountdownTimer(deadline: String, countdownView: AppCompatTextView): CountDownTimer {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val givenDate = LocalDate.parse(deadline, formatter)
+
+        // Calculate milliseconds until deadline
+        val now = LocalDateTime.now()
+        val deadlineDateTime = givenDate.atStartOfDay()
+
+        // If deadline is in the past, return a timer that immediately finishes
+        if (now.isAfter(deadlineDateTime)) {
+            return object : CountDownTimer(0, 1000) {
+                override fun onTick(millisUntilFinished: Long) {}
+                override fun onFinish() {
+                    countdownView.text = "00 : 00 : 00"
+                }
+            }
         }
 
-        override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
-            val item = goals[position]
-            holder.itemView.setOnClickListener {
-                onItemClick.invoke(item)
+        val millisToCountdown = ChronoUnit.MILLIS.between(now, deadlineDateTime)
+
+        return object : CountDownTimer(millisToCountdown, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val hours = millisUntilFinished / (60 * 60 * 1000)
+                val minutes = (millisUntilFinished % (60 * 60 * 1000)) / (60 * 1000)
+                val seconds = (millisUntilFinished % (60 * 1000)) / 1000
+
+                val formattedTime = String.format(
+                    "%02d : %02d : %02d",
+                    hours, minutes, seconds
+                )
+                countdownView.text = formattedTime
             }
 
-            holder.shareToggle.isChecked = item.shareGoal
-            holder.category.text = getCategoryById(item.categoryId)?.name ?:""
-            holder.title.text = item.title
-            setCircleProgressView(holder.circleProgressView, item.goalStep)
-            holder.countdown.text = startCountdown(item.deadlineDate)
+            override fun onFinish() {
+                // When timer ends, display 00:00:00
+                countdownView.text = "00 : 00 : 00"
+            }
         }
-
-        private fun getCategoryById(id: Int): Category? {
-            return Constance.categories.find{ it.id == id }
-        }
-
-        private fun setCircleProgressView(circleProgressView: CircleProgressView
-                                          , goalStep: ArrayList<GoalStep>)  {
-            circleProgressView.blockCount = goalStep.size
-            val checkedCount = goalStep.count { it.isChecked }
-            circleProgressView.setText("$checkedCount/${goalStep.size}")
-            circleProgressView.setValueAnimated((5/goalStep.size.toFloat())*checkedCount)
-        }
-
-    private fun startCountdown(date : String) : String {
-        val timeLeft = getTimeLeft(date)
-        return timeLeft
     }
 
-    @SuppressLint("DefaultLocale")
-    private fun getTimeLeft(date: String): String {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val givenDate = LocalDate.parse(date, formatter)
-        val today = LocalDate.now()
-        val daysBetween = ChronoUnit.DAYS.between(today, givenDate)
-        if (daysBetween <= 0) return "00M 00W 00D"
-        val period = Period.between(today, givenDate)
-        println("Difference: ${period.years} years, ${period.months} months, and ${period.days} days")
-        return String.format(
-            "%02dY %02dM %02dD",
-            period.years, period.months, period.days
-        )
+    private fun getCategoryById(id: Int): Category? {
+        return Constance.categories.find { it.id == id }
     }
 
-        override fun getItemCount(): Int = goals.size
+    private fun setProgressBar(progressBar: LinearProgressIndicator, goalStep: ArrayList<GoalStep>) {
+        val totalSteps = goalStep.size
+        val checkedCount = goalStep.count { it.isChecked }
+        val progressPercentage = if (totalSteps > 0) {
+            (checkedCount.toFloat() / totalSteps) * 100
+        } else {
+            0f
         }
+        val progressColor = when {
+            progressPercentage == 0f -> R.color.progress_red
+            progressPercentage < 25f -> R.color.progress_red
+            progressPercentage < 50f -> R.color.progress_orange
+            progressPercentage < 75f -> R.color.progress_yellow
+            progressPercentage < 100f -> R.color.progress_light_green
+            else -> R.color.progress_green
+        }
+        progressBar.setIndicatorColor(ContextCompat.getColor(progressBar.context, progressColor))
+        progressBar.progress = progressPercentage.toInt()
+    }
 
+    override fun getItemCount(): Int = goals.size
+}
