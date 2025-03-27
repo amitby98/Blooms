@@ -52,6 +52,22 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.circle)
     ksp(libs.room.compiler)
+        // Retrofit
+        implementation("com.squareup.retrofit2:retrofit:2.9.0")
+        implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+        // Gson
+        implementation("com.google.code.gson:gson:2.9.0")
+
+        // Coroutines
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+        // ViewModel and LiveData
+        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+        implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation ("com.google.android.material:material:1.4.0")
+    implementation ("androidx.cardview:cardview:1.0.0")
+    implementation ("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
