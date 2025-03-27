@@ -83,8 +83,17 @@ class AllMyGoalFragment : Fragment() {
     }
 
     private fun populateUserData(user: User) {
-        mHelloName.text = "Hello, ${user.firstName}"
+        mHelloName.text = "Hello, ${toTitleCase(user.firstName)}!"
         mImageProfile.setImageBitmap(ImageUtils.convertBase64ToBitmap(user.profileImage))
+    }
+
+    private fun toTitleCase(text: String): String {
+        if (text.isEmpty()) return text
+
+        return text.split(" ").joinToString(" ") { word ->
+            if (word.isEmpty()) word
+            else word.substring(0, 1).uppercase() + word.substring(1).lowercase()
+        }
     }
 
     private fun populateData(goals: List<Goal>) {
@@ -100,5 +109,4 @@ class AllMyGoalFragment : Fragment() {
         intent.putExtra(ADD_NEW_POST_FROM_GOAL, goal)
         launcher.launch(intent)
     }
-
 }
