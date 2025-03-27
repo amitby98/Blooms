@@ -23,6 +23,7 @@ import com.example.blooms.general.showCustomToast
 import com.example.blooms.mainApp.MainAppActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
@@ -32,6 +33,10 @@ class LoginFragment : Fragment() {
     private lateinit var mPassword: TextInputEditText
     private lateinit var mLoginButton: MaterialButton
     private lateinit var mRememberMeCheckBox: AppCompatCheckBox
+    private lateinit var mForgotPassword: AppCompatTextView
+    private lateinit var mPasswordInputLayout: TextInputLayout
+    private lateinit var mUsernameInputLayout: TextInputLayout
+    var isForgotPassword = false
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
@@ -82,6 +87,9 @@ class LoginFragment : Fragment() {
         mPassword = view.findViewById(R.id.passwordEditText)
         mLoginButton = view.findViewById(R.id.loginButton)
         mRememberMeCheckBox = view.findViewById(R.id.rememberMeCheckbox)
+        mForgotPassword = view.findViewById(R.id.forgotPasswordText)
+        mPasswordInputLayout = view.findViewById(R.id.passwordInputLayout)
+        mUsernameInputLayout = view.findViewById(R.id.usernameInputLayout)
     }
 
     private fun setupClickListeners() {
@@ -92,31 +100,34 @@ class LoginFragment : Fragment() {
         mLoginButton.setOnClickListener {
             performLogin()
         }
+
+        mForgotPassword.setOnClickListener {
+            forgotPasswordLogic(true)
+        }
     }
 
-    // todo: move to viewModel
-    private fun validateInput(email: String, password: String): Boolean {
-        var isValid = true
 
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            showCustomToast("Invalid email address")
-            isValid = false
-        }
-
-        if (password.isEmpty() || password.length < 6) {
-            showCustomToast("Password must be at least 6 characters")
-            isValid = false
-        }
-
-        return isValid
+    private fun forgotPasswordLogic(forgotClicked: Boolean) {
+        isForgotPassword = forgotClicked
+        var viewState = if (forgotClicked) View.INVISIBLE else View.VISIBLE
+        mRememberMeCheckBox.visibility = viewState
+        mPassword.visibility = viewState
+        mForgotPassword.visibility = viewState
+        mPasswordInputLayout.visibility = viewState
+        mUsername.text?.clear()
+        if(forgotClicked) mUsernameInputLayout.hint = "Enter your mail" else mUsernameInputLayout.hint = "Username"
+        if(forgotClicked) mLoginButton.text = "RESET PASSWORD" else mLoginButton.text = "LOGIN"
     }
 
     private fun performLogin() {
         val username = mUsername.text.toString().trim()
         val password = mPassword.text.toString()
 
-        if (validateInput(username,password)) {
+        var vaild = viewModel.validateInput(username,password)
+        if (vaild.first) {
             viewModel.signIn(username, password)
+        } else {
+            showCustomToast(vaild.second)
         }
     }
 }

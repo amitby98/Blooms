@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.Locale
 
@@ -37,25 +38,48 @@ class AllPostsAdapter(private val allPosts: List<HomePagePosts>, private val onI
 
     override fun onBindViewHolder(holder: AllPostsViewHolder, position: Int) {
         val homePagePost = allPosts[position]
-        holder.userName.text = homePagePost.userName
+        holder.userName.text = toTitleCase(homePagePost.userName)
         holder.title.text = homePagePost.post.title
         holder.message.text = homePagePost.post.message
+
         val currentTimeMillis = homePagePost.post.postDateAndTime
-        // Convert current time millis to an Instant
-        val instant = Instant.ofEpochMilli(currentTimeMillis)
+        holder.createDate.text = formatTimeAgo(currentTimeMillis)
 
-        // Define a formatter for the desired format
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            .withZone(ZoneId.systemDefault()) // Use the system default time zone
-
-        // Format the Instant to the desired string format
-        val formattedDate = formatter.format(instant)
-        holder.createDate.text = formattedDate
         holder.imageProfile.setImageBitmap(ImageUtils.convertBase64ToBitmap(homePagePost.userProfileImage))
         holder.postImage.setImageBitmap(ImageUtils.convertBase64ToBitmap(homePagePost.post.image))
 
         holder.itemView.setOnClickListener {
             onItemClick(position)
+        }
+    }
+
+    private fun toTitleCase(text: String): String {
+        if (text.isEmpty()) return text
+
+        return text.split(" ").joinToString(" ") { word ->
+            if (word.isEmpty()) word
+            else word.substring(0, 1).uppercase() + word.substring(1).lowercase()
+        }
+    }
+
+    private fun formatTimeAgo(timestamp: Long): String {
+        val now = Instant.now()
+        val postTime = Instant.ofEpochMilli(timestamp)
+
+        val secondsDiff = ChronoUnit.SECONDS.between(postTime, now)
+        val minutesDiff = ChronoUnit.MINUTES.between(postTime, now)
+        val hoursDiff = ChronoUnit.HOURS.between(postTime, now)
+
+        return when {
+            secondsDiff < 60 -> "just now"
+            minutesDiff < 60 -> "$minutesDiff ${if (minutesDiff == 1L) "minute" else "minutes"} ago"
+            hoursDiff < 24 -> "$hoursDiff ${if (hoursDiff == 1L) "hour" else "hours"} ago"
+            else -> {
+                val formatter = DateTimeFormatter
+                    .ofPattern("MMMM d, yyyy", Locale.ENGLISH)
+                    .withZone(ZoneId.systemDefault())
+                formatter.format(postTime)
+            }
         }
     }
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:background="#F5F5F5">
+    android:background="@color/second_white">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/quoteCard"

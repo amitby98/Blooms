@@ -54,4 +54,9 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
 
+    <style name="SwitchThemeOverlay">
+        <item name="colorControlActivated">@color/success_green</item>
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <item name="android:colorForeground">@color/light_purple</item>
+    </style>
 </resources>
