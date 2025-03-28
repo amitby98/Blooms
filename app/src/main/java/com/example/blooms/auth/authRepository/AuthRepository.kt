@@ -26,6 +26,14 @@ class AuthRepository {
             }
         }
 
+    suspend fun forgotPassword(email: String): Result<Boolean?> =
+        withContext(Dispatchers.IO) {
+            kotlin.runCatching {
+                auth.sendPasswordResetEmail(email).await()
+                true
+            }
+        }
+
     fun signOut() {
         auth.signOut()
     }

@@ -48,6 +48,20 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    fun forgotPassword(email: String) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            repository.forgotPassword(email)
+                .onSuccess { bool ->
+                    _authState.value = AuthState.ForgotPasswordSuccess
+                }
+                .onFailure { exception ->
+                    _authState.value = AuthState.ForgotPasswordError(exception.message ?: "Sign in failed")
+                }
+        }
+    }
+
+
     fun signOut() {
         repository.signOut()
         _authState.value = AuthState.Idle
@@ -69,6 +83,18 @@ class AuthViewModel : ViewModel() {
 
         if (password.isEmpty() || password.length < 6) {
             errorText = "Password must be at least 6 characters"
+            isValid = false
+        }
+
+        return Pair(isValid, errorText)
+    }
+
+    fun forgotPasswordValidateInput(email: String): Pair<Boolean, String> {
+        var isValid = true
+        var errorText = ""
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            errorText = "Invalid email address"
             isValid = false
         }
 

@@ -19,6 +19,7 @@ import com.example.blooms.auth.authViewModel.AuthViewModel
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.REMEMBER_MY_LOGIN
 import com.example.blooms.general.SharedPrefsHelper
+import com.example.blooms.general.SuccessDialog
 import com.example.blooms.general.showCustomToast
 import com.example.blooms.mainApp.MainAppActivity
 import com.google.android.material.button.MaterialButton
@@ -59,6 +60,27 @@ class LoginFragment : Fragment() {
         viewModel.authState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AuthState.Loading -> {}
+                is AuthState.ForgotPasswordSuccess -> {
+                    val customPopup = SuccessDialog(requireActivity())
+                    customPopup.show(
+                        "Success",
+                        "Password reset email sent",
+                        "Close",
+                        onButtonClick = {
+                            isForgotPassword = false
+                            forgotPasswordLogic(isForgotPassword)
+                        }
+                    )
+
+                }
+                is AuthState.ForgotPasswordError -> {
+                    val customPopup = ErrorDialog(requireActivity())
+                    customPopup.show(
+                        "Oops",
+                        state.error,
+                        "TRY AGAIN"
+                    )
+                }
                 is AuthState.Success -> {
                     if(mRememberMeCheckBox.isChecked) {
                         SharedPrefsHelper(requireContext()).save(REMEMBER_MY_LOGIN, true)
@@ -102,7 +124,7 @@ class LoginFragment : Fragment() {
         }
 
         mForgotPassword.setOnClickListener {
-            forgotPasswordLogic(true)
+            forgotPasswordLogic(!isForgotPassword)
         }
     }
 
@@ -112,7 +134,7 @@ class LoginFragment : Fragment() {
         var viewState = if (forgotClicked) View.INVISIBLE else View.VISIBLE
         mRememberMeCheckBox.visibility = viewState
         mPassword.visibility = viewState
-        mForgotPassword.visibility = viewState
+        if(forgotClicked) mForgotPassword.text = "Back To Login" else mForgotPassword.text = "Forgot Password?"
         mPasswordInputLayout.visibility = viewState
         mUsername.text?.clear()
         if(forgotClicked) mUsernameInputLayout.hint = "Enter your mail" else mUsernameInputLayout.hint = "Username"
@@ -123,9 +145,13 @@ class LoginFragment : Fragment() {
         val username = mUsername.text.toString().trim()
         val password = mPassword.text.toString()
 
-        var vaild = viewModel.validateInput(username,password)
+        var vaild = if (isForgotPassword) viewModel.forgotPasswordValidateInput(email = username) else viewModel.validateInput(username,password)
         if (vaild.first) {
-            viewModel.signIn(username, password)
+            if(isForgotPassword) {
+                viewModel.forgotPassword(username)
+            } else {
+                viewModel.signIn(username, password)
+            }
         } else {
             showCustomToast(vaild.second)
         }
