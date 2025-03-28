@@ -11,6 +11,8 @@ import com.example.blooms.model.Goal
 import com.example.blooms.model.HomePagePosts
 import com.example.blooms.model.Post
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class HomeViewModel(application: Application) : AndroidViewModel(application)  {
@@ -37,7 +39,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
     }
 
 
-    private fun getAllRelevantPosts(goalsList : List<Goal>) : ArrayList<HomePagePosts> {
+    private fun getAllRelevantPosts(goalsList : List<Goal>) : List<HomePagePosts> {
         val postsList = arrayListOf<HomePagePosts>()
         goalsList.forEach { goal ->
             if(goal.shareGoal) {
@@ -52,6 +54,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
                 }
             }
         }
-        return postsList
+        return postsList.sortedByDescending { it.post.postDateAndTime }
     }
+
 }

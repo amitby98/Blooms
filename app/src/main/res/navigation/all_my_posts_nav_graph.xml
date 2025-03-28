@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_app_nav_graph"
+    app:startDestination="@id/allMyPostsLobbyFragment">
+    <fragment
+        android:id="@+id/allMyPostsLobbyFragment"
+        android:name="com.example.blooms.allMyPosts.Lobby.AllMyPostsLobbyFragment"
+        android:label="AllMyPostsLobbyFragment"
+        tools:layout="@layout/fragment_all_my_posts_lobby">
+        <action
+            android:id="@+id/action_allMyPostsLobbyFragment_to_allMyPostsEditFragment"
+            app:destination="@id/allMyPostsEditFragment" >
+        <argument
+            android:name="goal"
+            app:argType="com.example.blooms.model.Goal" />
+        <argument
+            android:name="postid"
+            app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/allMyPostsEditFragment"
+        android:name="com.example.blooms.allMyPosts.editPost.AllMyPostsEditFragment"
+        android:label="AllMyPostsEditFragment" >
+    <argument
+        android:name="goal"
+        app:argType="com.example.blooms.model.Goal" />
+    <argument
+        android:name="postid"
+        app:argType="string" />
+    </fragment>
+</navigation>

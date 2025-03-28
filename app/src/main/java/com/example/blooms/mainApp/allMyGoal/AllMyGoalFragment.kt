@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blooms.R
 import com.example.blooms.addNewPost.AddNewPostActivity
+import com.example.blooms.allMyPosts.AllMyPostsActivity
 import com.example.blooms.general.Constance.ADD_NEW_POST_FROM_GOAL
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.ImageUtils
@@ -98,7 +99,8 @@ class AllMyGoalFragment : Fragment() {
 
     private fun populateData(goals: List<Goal>) {
         val adapter = AllMyGoalsAdapter(requireActivity(), goals) { goal ->
-            addNewPost(goal)
+        getAllMyPost()
+        //addNewPost(goal)
         }
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
         recyclerView.adapter = adapter
@@ -107,6 +109,11 @@ class AllMyGoalFragment : Fragment() {
     private fun addNewPost(goal: Goal) {
         val intent = Intent(requireContext(), AddNewPostActivity::class.java)
         intent.putExtra(ADD_NEW_POST_FROM_GOAL, goal)
+        launcher.launch(intent)
+    }
+
+    private fun getAllMyPost() {
+        val intent = Intent(requireContext(), AllMyPostsActivity::class.java)
         launcher.launch(intent)
     }
 }
