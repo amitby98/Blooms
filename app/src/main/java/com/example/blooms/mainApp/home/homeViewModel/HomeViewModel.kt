@@ -32,7 +32,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
                     }
                 }
                 .onFailure { exception ->
-                    //TODO: Get from room
                     _homeState.value = HomeState.GetAllGoalsError(exception.message ?: "All Goals failed")
                 }
         }
