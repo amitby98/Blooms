@@ -118,14 +118,30 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/add_new_post_step2_update_button"
         style="@style/BloomsButton"
+        android:layout_width="180dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="40dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Update"
+        app:layout_constraintRight_toLeftOf="@+id/edit_post_delete_button"
+        app:layout_constraintTop_toBottomOf="@+id/add_new_post_step2_image_view"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/edit_post_delete_button"
+        style="@style/BloomsButton"
+        android:layout_width="110dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="60dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Update"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Delete"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_new_post_step2_image_view"
         app:layout_constraintBottom_toBottomOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

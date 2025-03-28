@@ -42,6 +42,7 @@ class AllMyPostsEditFragment : Fragment() {
     private lateinit var mImagePost: AppCompatImageView
     private lateinit var imagePickerHelper: ImagePickerHelper
     private lateinit var mUpdateButton: MaterialButton
+    private lateinit var mDeleteButton: MaterialButton
     private val viewModel: AllMyPostsEditViewModel by viewModels()
     private lateinit var loadingDialog: LoadingDialog
 
@@ -91,6 +92,11 @@ class AllMyPostsEditFragment : Fragment() {
         mImageButton = view.findViewById(R.id.add_new_post_step2_camera_button)
         mImagePost = view.findViewById(R.id.add_new_post_step2_image_view)
         mUpdateButton = view.findViewById(R.id.add_new_post_step2_update_button)
+        mDeleteButton = view.findViewById(R.id.edit_post_delete_button)
+
+        mDeleteButton.setOnClickListener {
+            deletePost()
+        }
 
         mUpdateButton.setOnClickListener {
             updateGoal()
@@ -111,6 +117,21 @@ class AllMyPostsEditFragment : Fragment() {
 
     }
 
+    private fun deletePost() {
+        val index = mGoal.posts.indexOfFirst { it.postId == mPostId }
+        val post = mGoal.posts.get(index)
+        val indexGoalTitle = mGoal.goalStep.indexOfFirst { it.text == post.title }
+        if (index != -1) {
+            mGoal.posts.removeAt(index)
+        }
+
+        if (indexGoalTitle != -1) {
+            mGoal.goalStep.removeAt(indexGoalTitle)
+        }
+
+        viewModel.uploadPost(mGoal)
+    }
+
     private fun updateGoal() {
         val postTitle = mTitleInput.text?.toString()?.trim() ?: ""
         val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
@@ -118,7 +139,18 @@ class AllMyPostsEditFragment : Fragment() {
         val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         var newPost = Post(postId = mPost.postId, userId = userId ,title = postTitle, message = newMessage, image = postImageString, postDateAndTime = mPost.postDateAndTime)
-        mGoal.posts.add(newPost)
+        val index = mGoal.posts.indexOfFirst { it.postId == newPost.postId }
+
+        val oldPost = mGoal.posts.get(index)
+        val indexGoalTitle = mGoal.goalStep.indexOfFirst { it.text == oldPost.title }
+
+        if (indexGoalTitle != -1) {
+            mGoal.goalStep.get(indexGoalTitle).text = newPost.title
+        }
+
+        if (index != -1) {
+            mGoal.posts[index] = newPost
+        }
         viewModel.uploadPost(mGoal)
     }
 

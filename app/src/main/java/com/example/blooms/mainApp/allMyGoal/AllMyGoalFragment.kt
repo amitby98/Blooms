@@ -27,6 +27,7 @@ import com.example.blooms.mainApp.allMyGoal.allMyGoalViewModel.AllMyGoalState
 import com.example.blooms.mainApp.allMyGoal.allMyGoalViewModel.AllMyGoalViewModel
 import com.example.blooms.model.Goal
 import com.example.blooms.model.User
+import com.google.android.material.button.MaterialButton
 
 
 class AllMyGoalFragment : Fragment() {
@@ -35,6 +36,7 @@ class AllMyGoalFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var mHelloName: AppCompatTextView
     private lateinit var mImageProfile: AppCompatImageView
+    private lateinit var mAllMyPosts: MaterialButton
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -56,6 +58,11 @@ class AllMyGoalFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         mHelloName = view.findViewById(R.id.my_goal_hello_text)
         mImageProfile = view.findViewById(R.id.my_goal_profile_image)
+        mAllMyPosts = view.findViewById(R.id.my_goal_all_post_button)
+
+        mAllMyPosts.setOnClickListener {
+            getAllMyPost()
+        }
     }
 
 
@@ -99,8 +106,8 @@ class AllMyGoalFragment : Fragment() {
 
     private fun populateData(goals: List<Goal>) {
         val adapter = AllMyGoalsAdapter(requireActivity(), goals) { goal ->
-        getAllMyPost()
-        //addNewPost(goal)
+        //getAllMyPost()
+        addNewPost(goal)
         }
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
         recyclerView.adapter = adapter
