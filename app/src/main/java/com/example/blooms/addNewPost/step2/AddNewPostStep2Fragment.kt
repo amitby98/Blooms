@@ -33,7 +33,6 @@ import com.squareup.picasso.Picasso
 class AddNewPostStep2Fragment : Fragment() {
 
     private lateinit var mCloseBtn: AppCompatImageView
-    private lateinit var mBackBtn: AppCompatImageView
     private lateinit var mTitleInput : TextInputEditText
     private lateinit var mMessageInput : TextInputEditText
     private lateinit var mImageButton: AppCompatImageView
@@ -75,7 +74,6 @@ class AddNewPostStep2Fragment : Fragment() {
     private fun initializeViews(view: View) {
         loadingDialog = LoadingDialog(requireContext())
         mCloseBtn = view.findViewById(R.id.add_new_post_step2_close_btn)
-        mBackBtn = view.findViewById(R.id.add_new_post_step2_back_btn)
         mTitleInput = view.findViewById(R.id.add_new_post_step2_title_input_edit_text)
         mMessageInput = view.findViewById(R.id.add_new_post_step2_body_input_edit_text)
         mImageButton = view.findViewById(R.id.add_new_post_step2_camera_button)
@@ -93,10 +91,6 @@ class AddNewPostStep2Fragment : Fragment() {
         mCloseBtn.setOnClickListener {
             requireActivity().setResult(android.app.Activity.RESULT_CANCELED)
             requireActivity().finish()
-        }
-
-        mBackBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_addNewPostStep2Fragment_to_addNewPostStep1Fragment)
         }
 
     }

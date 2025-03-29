@@ -48,15 +48,15 @@ class CategoryAdapter(
         // Update selection state
         if (category.isSelected) {
             holder.categoryCard.setCardBackgroundColor(holder.itemView.context.getColor(R.color.colorPrimary))
-            holder.categoryName.setTextColor(holder.itemView.context.getColor(R.color.white))
-            holder.categoryIcon.setColorFilter(holder.itemView.context.getColor(R.color.white))
+            holder.categoryName.setTextColor(holder.itemView.context.getColor(R.color.black))
+            holder.categoryIcon.setColorFilter(holder.itemView.context.getColor(R.color.black))
 
             // Add scale animation
             holder.categoryCard.animate().scaleX(1.05f).scaleY(1.05f).setDuration(200).start()
         } else {
             holder.categoryCard.setCardBackgroundColor(holder.itemView.context.getColor(R.color.white))
-            holder.categoryName.setTextColor(holder.itemView.context.getColor(R.color.black))
-            holder.categoryIcon.setColorFilter(holder.itemView.context.getColor(R.color.colorPrimary))
+            holder.categoryName.setTextColor(holder.itemView.context.getColor(R.color.white))
+            holder.categoryIcon.setColorFilter(holder.itemView.context.getColor(R.color.white))
 
             // Reset scale
             holder.categoryCard.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start()
