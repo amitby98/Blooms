@@ -1,101 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="180dp"
-    android:layout_height="180dp"
-    android:layout_marginBottom="15dp"
-    android:layout_marginHorizontal="15px"
-    android:background="@drawable/rounded_background"
-    android:paddingStart="10dp"
-    android:paddingEnd="10dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/goal_share_text"
-        android:text="SHARE YOUR GOAL"
-        android:textColor="#D28871"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/goal_share_toggle"
-        android:textSize="9sp"
-        android:fontFamily="@font/poppins_semibold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/goal_share_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="10dp"
-        android:checked="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:scaleX="0.7"
-        android:scaleY="0.6"
-        app:thumbTint="@color/switch_thumb_colors"
-        app:trackTint="@color/switch_track_colors"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/goal_category"
-        android:text="Category"
-        android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_share_text"
-        android:fontFamily="@font/poppins_medium"
-        android:layout_marginTop="0dp"
-        android:textSize="10sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/goal_title"
-        android:text="Lose 10 KG"
-        android:textAllCaps="true"
-        android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_category"
-        android:layout_marginTop="2dp"
-        android:textSize="16sp"
-        android:fontFamily="@font/poppins_semibold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/goal_progress_bar"
-        android:layout_width="0dp"
-        android:layout_height="12dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_title"
-        app:trackCornerRadius="6dp"
-        app:trackThickness="12dp"
-        app:indicatorColor="#4CAF50"
-        app:trackColor="#D6D6D6"
-        tools:progress="40" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/goal_countdownTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_progress_bar"
-        android:text="00 : 00 : 00"
-        android:textSize="28sp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/digib" />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="170dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/actions_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/goal_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Category"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/goal_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/goal_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Lose 10 KG"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goal_category" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/goal_progress_bar"
+            android:layout_width="0dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="10dp"
+            app:indicatorColor="#4CAF50"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goal_title"
+            app:trackColor="#D6D6D6"
+            app:trackCornerRadius="6dp"
+            app:trackThickness="12dp"
+            tools:progress="40" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/goal_countdownTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/digib"
+            android:text="00 : 00 : 00"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goal_progress_bar" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/delete_button"
@@ -106,9 +79,7 @@
             android:focusable="true"
             android:src="@drawable/ic_delete"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
