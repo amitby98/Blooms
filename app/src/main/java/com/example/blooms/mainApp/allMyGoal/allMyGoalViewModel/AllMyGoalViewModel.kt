@@ -22,12 +22,9 @@ class AllMyGoalViewModel : ViewModel() {
         viewModelScope.launch {
             repository.getAllMyGoals()
                 .onSuccess { myGoals ->
-                    if (myGoals.isNotEmpty()) {
                         _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsSuccess(myGoals)
-                    }
                 }
                 .onFailure { exception ->
-                    //TODO: need to take from ROOM
                     _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsError(exception.message ?: "All My Goals Posts failed")
                 }
         }

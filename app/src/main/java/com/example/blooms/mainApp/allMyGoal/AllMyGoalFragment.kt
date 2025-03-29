@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blooms.R
 import com.example.blooms.addNewPost.AddNewPostActivity
+import com.example.blooms.allMyPosts.AllMyPostsActivity
 import com.example.blooms.general.Constance.ADD_NEW_POST_FROM_GOAL
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.ImageUtils
@@ -26,6 +27,7 @@ import com.example.blooms.mainApp.allMyGoal.allMyGoalViewModel.AllMyGoalState
 import com.example.blooms.mainApp.allMyGoal.allMyGoalViewModel.AllMyGoalViewModel
 import com.example.blooms.model.Goal
 import com.example.blooms.model.User
+import com.google.android.material.button.MaterialButton
 
 
 class AllMyGoalFragment : Fragment() {
@@ -34,6 +36,7 @@ class AllMyGoalFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var mHelloName: AppCompatTextView
     private lateinit var mImageProfile: AppCompatImageView
+    private lateinit var mAllMyPosts: MaterialButton
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -55,6 +58,11 @@ class AllMyGoalFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         mHelloName = view.findViewById(R.id.my_goal_hello_text)
         mImageProfile = view.findViewById(R.id.my_goal_profile_image)
+        mAllMyPosts = view.findViewById(R.id.my_goal_all_post_button)
+
+        mAllMyPosts.setOnClickListener {
+            getAllMyPost()
+        }
     }
 
 
@@ -98,7 +106,8 @@ class AllMyGoalFragment : Fragment() {
 
     private fun populateData(goals: List<Goal>) {
         val adapter = AllMyGoalsAdapter(requireActivity(), goals) { goal ->
-            addNewPost(goal)
+        //getAllMyPost()
+        addNewPost(goal)
         }
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
         recyclerView.adapter = adapter
@@ -107,6 +116,11 @@ class AllMyGoalFragment : Fragment() {
     private fun addNewPost(goal: Goal) {
         val intent = Intent(requireContext(), AddNewPostActivity::class.java)
         intent.putExtra(ADD_NEW_POST_FROM_GOAL, goal)
+        launcher.launch(intent)
+    }
+
+    private fun getAllMyPost() {
+        val intent = Intent(requireContext(), AllMyPostsActivity::class.java)
         launcher.launch(intent)
     }
 }

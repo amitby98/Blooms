@@ -1,4 +1,4 @@
-package com.example.blooms.addNewPost.step2
+package com.example.blooms.allMyPosts.editPost
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +14,8 @@ import com.example.blooms.R
 import com.example.blooms.addNewPost.step1.AddNewPostStep1FragmentArgs
 import com.example.blooms.addNewPost.step2.addNewPostStep2ViewModel.AddNewPostStep2State
 import com.example.blooms.addNewPost.step2.addNewPostStep2ViewModel.AddNewPostStep2ViewModel
+import com.example.blooms.allMyPosts.editPost.allMyPostsEditViewModel.AllMyPostsEditState
+import com.example.blooms.allMyPosts.editPost.allMyPostsEditViewModel.AllMyPostsEditViewModel
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.ImagePickerHelper
 import com.example.blooms.general.ImageUtils
@@ -30,7 +32,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
 
-class AddNewPostStep2Fragment : Fragment() {
+class AllMyPostsEditFragment : Fragment() {
 
     private lateinit var mCloseBtn: AppCompatImageView
     private lateinit var mBackBtn: AppCompatImageView
@@ -40,18 +42,19 @@ class AddNewPostStep2Fragment : Fragment() {
     private lateinit var mImagePost: AppCompatImageView
     private lateinit var imagePickerHelper: ImagePickerHelper
     private lateinit var mUpdateButton: MaterialButton
-    private val viewModel: AddNewPostStep2ViewModel by viewModels()
+    private lateinit var mDeleteButton: MaterialButton
+    private val viewModel: AllMyPostsEditViewModel by viewModels()
     private lateinit var loadingDialog: LoadingDialog
 
-    private var mPositionChange: Int = -1
+    private var mPostId: String = ""
     private lateinit var mGoal : Goal
-
+    private lateinit var mPost: Post
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add_new_post_step2, container, false)
+        return inflater.inflate(R.layout.fragment_all_my_posts_edit_post, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,16 +63,24 @@ class AddNewPostStep2Fragment : Fragment() {
         setImagePickerHelper()
         setupObservers()
         try {
-            // Retrieve the Goal object passed from the Activity
             if (arguments != null) {
-                val args = AddNewPostStep2FragmentArgs.fromBundle(requireArguments())
-                mPositionChange = args.position
+                val args = AllMyPostsEditFragmentArgs.fromBundle(requireArguments())
+                mPostId = args.postid
                 mGoal = args.goal
-                mTitleInput.setText(mGoal.goalStep.get(mPositionChange).text)
+                mPost = mGoal.posts.find { it.postId == mPostId } ?: Post()
+                mPost.let {
+                    populateScreen()
+                }
             }
         }catch (_:Exception) {
 
         }
+    }
+
+    private fun populateScreen() {
+        mTitleInput.setText(mPost.title)
+        mMessageInput.setText(mPost.message)
+        mImagePost.setImageBitmap(ImageUtils.convertBase64ToBitmap(mPost.image))
     }
 
     private fun initializeViews(view: View) {
@@ -81,6 +92,11 @@ class AddNewPostStep2Fragment : Fragment() {
         mImageButton = view.findViewById(R.id.add_new_post_step2_camera_button)
         mImagePost = view.findViewById(R.id.add_new_post_step2_image_view)
         mUpdateButton = view.findViewById(R.id.add_new_post_step2_update_button)
+        mDeleteButton = view.findViewById(R.id.edit_post_delete_button)
+
+        mDeleteButton.setOnClickListener {
+            deletePost()
+        }
 
         mUpdateButton.setOnClickListener {
             updateGoal()
@@ -101,25 +117,48 @@ class AddNewPostStep2Fragment : Fragment() {
 
     }
 
+    private fun deletePost() {
+        val index = mGoal.posts.indexOfFirst { it.postId == mPostId }
+        val post = mGoal.posts.get(index)
+        val indexGoalTitle = mGoal.goalStep.indexOfFirst { it.text == post.title }
+        if (index != -1) {
+            mGoal.posts.removeAt(index)
+        }
+
+        if (indexGoalTitle != -1) {
+            mGoal.goalStep.removeAt(indexGoalTitle)
+        }
+
+        viewModel.uploadPost(mGoal)
+    }
+
     private fun updateGoal() {
         val postTitle = mTitleInput.text?.toString()?.trim() ?: ""
         val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
-        var postImageString = ""
-        if(mImagePost.drawable != null) {
-            val bitmap = mImagePost.drawable.toBitmap()
-            postImageString = ImageUtils.convertBitmapToBase64(bitmap)
-        }
+        val bitmap = mImagePost.drawable.toBitmap()
+        val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
-        mGoal.posts.add(newPost)
-        viewModel.uploadPost(mGoal, mGoal.posts.lastIndex)
+        var newPost = Post(postId = mPost.postId, userId = userId ,title = postTitle, message = newMessage, image = postImageString, postDateAndTime = mPost.postDateAndTime)
+        val index = mGoal.posts.indexOfFirst { it.postId == newPost.postId }
+
+        val oldPost = mGoal.posts.get(index)
+        val indexGoalTitle = mGoal.goalStep.indexOfFirst { it.text == oldPost.title }
+
+        if (indexGoalTitle != -1) {
+            mGoal.goalStep.get(indexGoalTitle).text = newPost.title
+        }
+
+        if (index != -1) {
+            mGoal.posts[index] = newPost
+        }
+        viewModel.uploadPost(mGoal)
     }
 
     private fun setupObservers() {
-        viewModel.addNewPostStep2State.observe(viewLifecycleOwner) { state ->
+        viewModel.allMyPostsEditPostState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is AddNewPostStep2State.Loading -> loadingDialog.show()
-                is AddNewPostStep2State.UpdatePostSuccess -> {
+                is AllMyPostsEditState.Loading -> loadingDialog.show()
+                is AllMyPostsEditState.UpdatePostSuccess -> {
                     loadingDialog.dismiss()
                     val customPopup = SuccessDialog(requireActivity())
                     customPopup.show(
@@ -133,7 +172,7 @@ class AddNewPostStep2Fragment : Fragment() {
                     )
 
                 }
-                is AddNewPostStep2State.UpdatePostError -> {
+                is AllMyPostsEditState.UpdatePostError -> {
                     loadingDialog.dismiss()
                     val errorDialog = ErrorDialog(requireActivity())
                     errorDialog.show(

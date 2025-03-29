@@ -32,7 +32,6 @@ class AddNewPostActivity : AppCompatActivity() {
             val action = AddNewPostStep1FragmentDirections.actionAddNewPostActivityToAddNewPostFragment(goal)
             navController.navigate(action)
         }.run {
-            //TODO: Show error
         }
 
 

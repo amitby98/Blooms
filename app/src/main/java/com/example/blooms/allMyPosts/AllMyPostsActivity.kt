@@ -1,23 +1,26 @@
-package com.example.blooms.auth
+package com.example.blooms.allMyPosts
 
+import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.blooms.R
+import com.example.blooms.addNewPost.step1.AddNewPostStep1FragmentDirections
+import com.example.blooms.general.Constance.ADD_NEW_POST_FROM_GOAL
+import com.example.blooms.model.Goal
 
-class MainActivity : AppCompatActivity() {
+
+class AllMyPostsActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_all_my_posts)
         // Obtain reference to the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.add_new_post_nav_host_fragment) as NavHostFragment
         // Get the NavController
         navController = navHostFragment.navController
     }
@@ -25,5 +28,4 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 }
