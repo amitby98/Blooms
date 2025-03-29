@@ -26,10 +26,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
         viewModelScope.launch {
             repository.getAllGoals()
                 .onSuccess { goals ->
-                    if (goals.isNotEmpty()) {
                         val allPosts = getAllRelevantPosts(goals)
                         _homeState.value = HomeState.GetAllPostsSuccess(allPosts)
-                    }
                 }
                 .onFailure { exception ->
                     _homeState.value = HomeState.GetAllGoalsError(exception.message ?: "All Goals failed")
