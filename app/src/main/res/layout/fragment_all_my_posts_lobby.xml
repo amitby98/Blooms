@@ -4,15 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient_background"
+    android:background="@color/second_white"
     tools:context=".addNewPost.step1.AddNewPostStep1Fragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/all_my_posts_lobby_close_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
         android:src="@drawable/ic_close"
-        android:padding="30dp"
+        android:tint="@color/button_blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -21,7 +22,6 @@
         android:id="@+id/all_my_posts_lobby_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/all_my_posts_lobby_close_btn"

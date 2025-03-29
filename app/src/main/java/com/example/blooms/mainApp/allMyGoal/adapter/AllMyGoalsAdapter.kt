@@ -29,7 +29,6 @@ class AllMyGoalsAdapter(
     private val countdownTimers = mutableMapOf<Int, CountDownTimer>()
 
     class GridViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val shareToggle: SwitchCompat = view.findViewById(R.id.goal_share_toggle)
         val category: AppCompatTextView = view.findViewById(R.id.goal_category)
         val title: AppCompatTextView = view.findViewById(R.id.goal_title)
         val progressBar: LinearProgressIndicator = view.findViewById(R.id.goal_progress_bar)
@@ -54,7 +53,6 @@ class AllMyGoalsAdapter(
             onItemClick.invoke(item)
         }
 
-        holder.shareToggle.isChecked = item.shareGoal
         holder.category.text = getCategoryById(item.categoryId)?.name ?: ""
         holder.title.text = item.title
         setProgressBar(holder.progressBar, item.goalStep)

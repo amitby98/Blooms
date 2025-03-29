@@ -5,8 +5,8 @@
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="16dp"
+    android:background="@drawable/gradient_background"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/colorPrimary" />
+            app:tint="@color/icons_blue" />
 
         <TextView
             android:id="@+id/category_name"
