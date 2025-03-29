@@ -99,7 +99,7 @@ class AllMyGoalFragment : Fragment() {
                     val customPopup = SuccessDialog(requireActivity())
                     customPopup.show(
                         "Success",
-                        "Your post has been sent to followers",
+                        "Your Post has been deleted",
                         "Close",
                         onButtonClick = {
                             loadingDialog.show()

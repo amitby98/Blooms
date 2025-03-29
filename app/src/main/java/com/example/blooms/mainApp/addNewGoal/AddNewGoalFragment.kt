@@ -52,7 +52,6 @@ class AddNewGoalFragment : Fragment() {
     private lateinit var mAddImageBtn: AppCompatButton
     private lateinit var mAddGoalBtn: AppCompatButton
     private lateinit var mImagePost: AppCompatImageView
-    private lateinit var mShareToggle: SwitchCompat
 
     private val viewModel: AddGoalViewModel by viewModels()
     private lateinit var loadingDialog: LoadingDialog
@@ -192,7 +191,7 @@ class AddNewGoalFragment : Fragment() {
         val postsList = ArrayList<Post>()
         postsList.add(newPost)
 
-        val newGoal = Goal(userId = userId, title = newTitle, categoryId = categoryId, shareGoal = mShareToggle.isChecked,
+        val newGoal = Goal(userId = userId, title = newTitle, categoryId = categoryId, shareGoal = true,
             deadlineDate = newDeadlineDate, posts = postsList, goalStep = goalStep )
 
         loadingDialog.show()
