@@ -1,5 +1,6 @@
 package com.example.blooms.mainApp
 
+import SettingsFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -8,7 +9,6 @@ import com.example.blooms.mainApp.addNewGoal.AddNewGoalFragment
 import com.example.blooms.mainApp.allMyGoal.AllMyGoalFragment
 import com.example.blooms.mainApp.home.HomeFragment
 import com.example.blooms.mainApp.profile.ProfileFragment
-import com.example.blooms.mainApp.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
