@@ -5,6 +5,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
@@ -23,7 +24,8 @@ import java.time.temporal.ChronoUnit
 class AllMyGoalsAdapter(
     private val context: Context,
     private val goals: List<Goal>,
-    private val onItemClick: (Goal) -> Unit
+    private val onItemClick: (Goal) -> Unit,
+    private val onDeleteClick: (Goal) -> Unit
 ) : RecyclerView.Adapter<AllMyGoalsAdapter.GridViewHolder>() {
 
     private val countdownTimers = mutableMapOf<Int, CountDownTimer>()
@@ -33,6 +35,7 @@ class AllMyGoalsAdapter(
         val title: AppCompatTextView = view.findViewById(R.id.goal_title)
         val progressBar: LinearProgressIndicator = view.findViewById(R.id.goal_progress_bar)
         val countdown: AppCompatTextView = view.findViewById(R.id.goal_countdownTextView)
+        val deleteButton: AppCompatImageView = view.findViewById(R.id.delete_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
@@ -48,7 +51,10 @@ class AllMyGoalsAdapter(
         timer.start()
         countdownTimers[position] = timer
 
-        // Rest of the existing code
+        holder.deleteButton.setOnClickListener {
+            onDeleteClick.invoke(item)
+        }
+
         holder.itemView.setOnClickListener {
             onItemClick.invoke(item)
         }

@@ -21,6 +21,7 @@ import com.example.blooms.general.Constance.ADD_NEW_POST_FROM_GOAL
 import com.example.blooms.general.ErrorDialog
 import com.example.blooms.general.ImageUtils
 import com.example.blooms.general.LoadingDialog
+import com.example.blooms.general.SuccessDialog
 import com.example.blooms.general.showCustomToast
 import com.example.blooms.mainApp.allMyGoal.adapter.AllMyGoalsAdapter
 import com.example.blooms.mainApp.allMyGoal.allMyGoalViewModel.AllMyGoalState
@@ -70,6 +71,7 @@ class AllMyGoalFragment : Fragment() {
         viewModel.allMyGoalState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AllMyGoalState.Loading -> loadingDialog.show()
+
                 is AllMyGoalState.GetUserDataSuccess -> populateUserData(state.user)
                 is AllMyGoalState.GetAllMyGoalsSuccess -> {
                     populateData(state.goals)
@@ -82,6 +84,27 @@ class AllMyGoalFragment : Fragment() {
                         "Oops",
                         state.message,
                         "close"
+                    )
+                }
+                is AllMyGoalState.DeleteGoalError -> {
+                    loadingDialog.dismiss()
+                    val errorDialog = ErrorDialog(requireActivity())
+                    errorDialog.show(
+                        "Oops",
+                        state.message,
+                        "close"
+                    )
+                }
+                is AllMyGoalState.DeleteGoalSuccess -> {
+                    val customPopup = SuccessDialog(requireActivity())
+                    customPopup.show(
+                        "Success",
+                        "Your Post has been deleted",
+                        "Close",
+                        onButtonClick = {
+                            loadingDialog.show()
+                            viewModel.getAllMyGoals()
+                        }
                     )
                 }
 
@@ -105,10 +128,14 @@ class AllMyGoalFragment : Fragment() {
     }
 
     private fun populateData(goals: List<Goal>) {
-        val adapter = AllMyGoalsAdapter(requireActivity(), goals) { goal ->
-        //getAllMyPost()
-        addNewPost(goal)
+        if(goals.isEmpty()) {
+            mAllMyPosts.visibility = View.GONE
         }
+        val adapter = AllMyGoalsAdapter(requireActivity(), goals, { goal ->
+            addNewPost(goal)
+        }, { deleteGoal ->
+            viewModel.deleteGoal(deleteGoal.goalId)
+        })
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 columns
         recyclerView.adapter = adapter
     }

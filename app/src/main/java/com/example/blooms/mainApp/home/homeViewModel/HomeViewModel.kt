@@ -38,16 +38,34 @@ class HomeViewModel(application: Application) : AndroidViewModel(application)  {
     }
 
 
+//    private fun getAllRelevantPosts(goalsList : List<Goal>) : List<HomePagePosts> {
+//        val postsList = arrayListOf<HomePagePosts>()
+//        goalsList.forEach { goal ->
+//            if(goal.shareGoal) {
+//                val maxPost = goal.posts.maxByOrNull { it.postDateAndTime }
+//                maxPost?.let { post ->
+//                    val homePagePost = HomePagePosts(
+//                        userName = goal.userName,
+//                        userProfileImage = goal.userImage,
+//                        post = post
+//                    )
+//                    postsList.add(homePagePost)
+//                }
+//            }
+//        }
+//        return postsList.sortedByDescending { it.post.postDateAndTime }
+//    }
+
+
     private fun getAllRelevantPosts(goalsList : List<Goal>) : List<HomePagePosts> {
         val postsList = arrayListOf<HomePagePosts>()
         goalsList.forEach { goal ->
             if(goal.shareGoal) {
-                val maxPost = goal.posts.maxByOrNull { it.postDateAndTime }
-                maxPost?.let { post ->
+                goal.posts.forEach {
                     val homePagePost = HomePagePosts(
                         userName = goal.userName,
                         userProfileImage = goal.userImage,
-                        post = post
+                        post = it
                     )
                     postsList.add(homePagePost)
                 }

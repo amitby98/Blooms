@@ -22,7 +22,7 @@ class AllMyGoalViewModel : ViewModel() {
         viewModelScope.launch {
             repository.getAllMyGoals()
                 .onSuccess { myGoals ->
-                        _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsSuccess(myGoals)
+                    _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsSuccess(myGoals)
                 }
                 .onFailure { exception ->
                     _allMyGoalState.value = AllMyGoalState.GetAllMyGoalsError(exception.message ?: "All My Goals Posts failed")
@@ -44,6 +44,19 @@ class AllMyGoalViewModel : ViewModel() {
                 }
                 .onFailure { exception ->
                     getAllMyGoals()
+                }
+        }
+    }
+
+    fun deleteGoal(goalId : String) {
+        _allMyGoalState.value = AllMyGoalState.Loading
+        viewModelScope.launch {
+            repository.deleteGoal(goalId)
+                .onSuccess { myGoals ->
+                    _allMyGoalState.value = AllMyGoalState.DeleteGoalSuccess
+                }
+                .onFailure { exception ->
+                    _allMyGoalState.value = AllMyGoalState.DeleteGoalError(exception.message ?: "Delete Goals Posts failed")
                 }
         }
     }

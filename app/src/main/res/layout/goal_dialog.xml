@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_regular"
-        app:boxStrokeColor="@color/black"
+        app:boxStrokeColor="#333333"
         android:textColorHint="@color/black"
-        app:hintTextColor="@color/black"
+        app:hintTextColor="@color/icons_blue"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/goal_step_add_step_add_button"
@@ -31,7 +31,7 @@
             android:hint="Add Step"
             android:inputType="textPersonName"
             android:fontFamily="@font/poppins_regular"
-            android:textColor="#333333"
+            android:textColor="@color/black"
             tools:text="Running 10 KM"/>
     </com.google.android.material.textfield.TextInputLayout>
 
