@@ -128,6 +128,9 @@ class AllMyGoalFragment : Fragment() {
     }
 
     private fun populateData(goals: List<Goal>) {
+        if(goals.isEmpty()) {
+            mAllMyPosts.visibility = View.GONE
+        }
         val adapter = AllMyGoalsAdapter(requireActivity(), goals, { goal ->
             addNewPost(goal)
         }, { deleteGoal ->
