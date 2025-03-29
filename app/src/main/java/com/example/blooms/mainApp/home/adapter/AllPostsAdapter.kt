@@ -46,8 +46,11 @@ class AllPostsAdapter(private val allPosts: List<HomePagePosts>, private val onI
         holder.createDate.text = formatTimeAgo(currentTimeMillis)
 
         holder.imageProfile.setImageBitmap(ImageUtils.convertBase64ToBitmap(homePagePost.userProfileImage))
-        holder.postImage.setImageBitmap(ImageUtils.convertBase64ToBitmap(homePagePost.post.image))
-
+        if(!homePagePost.post.image.isNullOrEmpty()) {
+            holder.postImage.setImageBitmap(ImageUtils.convertBase64ToBitmap(homePagePost.post.image))
+        } else {
+            holder.postImage.visibility = View.GONE
+        }
         holder.itemView.setOnClickListener {
             onItemClick(position)
         }

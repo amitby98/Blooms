@@ -43,4 +43,12 @@ class AllMyGoalRepository {
                 }
             }
         }
-    }
+
+    suspend fun deleteGoal(goalId : String) : Result<Boolean> =
+        withContext(Dispatchers.IO) {
+            kotlin.runCatching {
+                goalsReference.child(goalId).removeValue().await()
+                true
+                }
+            }
+}

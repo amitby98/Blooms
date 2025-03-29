@@ -40,7 +40,7 @@ class AddNewPostStep1Fragment : Fragment() {
             if (arguments != null) {
                 val args = AddNewPostStep1FragmentArgs.fromBundle(requireArguments())
                 mGoal = args.goal  // This is the Goal object passed via Safe Args
-                adapter = NewPostStep1GoalStepAdapter(mGoal.goalStep){ item , position->
+                adapter = NewPostStep1GoalStepAdapter(requireContext(), mGoal.goalStep){ item , position->
                     mGoal.goalStep[position].isChecked = true
                     val action = AddNewPostStep1FragmentDirections.actionAddNewPostStep1FragmentToAddNewPostStep2Fragment(mGoal, position)
                     findNavController().navigate(action)

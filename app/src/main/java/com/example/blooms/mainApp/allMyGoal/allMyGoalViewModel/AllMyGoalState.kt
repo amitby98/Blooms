@@ -8,4 +8,6 @@ sealed class AllMyGoalState {
     data class GetAllMyGoalsSuccess(val goals: List<Goal>) : AllMyGoalState()
     data class GetUserDataSuccess(val user: User) : AllMyGoalState()
     data class GetAllMyGoalsError(val message: String) : AllMyGoalState()
+    data object DeleteGoalSuccess : AllMyGoalState()
+    data class DeleteGoalError(val message: String) : AllMyGoalState()
 }

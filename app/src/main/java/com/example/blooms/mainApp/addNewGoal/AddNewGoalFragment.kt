@@ -150,8 +150,24 @@ class AddNewGoalFragment : Fragment() {
         val newMessage = mMessageInput.text?.trim() ?: ""
         val newDeadlineDate = mDeadlineInput.text?.trim() ?: ""
 
-        if(newPostTitle.isEmpty() || newMessage.isEmpty() || newDeadlineDate.isEmpty() || categorySelected.id == -1 ) {
+        if(newPostTitle.isEmpty()
+            || newMessage.isEmpty()
+            || newDeadlineDate.isEmpty()
+            || categorySelected.id == -1) {
             showCustomToast("Please fill all fields")
+            return false
+        } else if(goalList.isEmpty()) {
+            showCustomToast("Please add step to achieve goal")
+            return false
+        }
+        var isCheck = false
+        goalList.forEach {
+            if(it.isChecked) {
+                isCheck = true
+            }
+        }
+        if(!isCheck) {
+            showCustomToast("Please select one step to achieve goal")
             return false
         }
         return true
@@ -161,8 +177,11 @@ class AddNewGoalFragment : Fragment() {
         //Create first post from our goal
         val postTitle = goalList.firstOrNull { it.isChecked }?.text ?: ""
         val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
-        val bitmap = mImagePost.drawable.toBitmap()
-        val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
+        var postImageString = ""
+        if(mImagePost.drawable != null) {
+            val bitmap = mImagePost.drawable.toBitmap()
+            postImageString = ImageUtils.convertBitmapToBase64(bitmap)
+        }
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         var newPost = Post(userId = userId ,title = postTitle, message = newMessage, image = postImageString)
 
