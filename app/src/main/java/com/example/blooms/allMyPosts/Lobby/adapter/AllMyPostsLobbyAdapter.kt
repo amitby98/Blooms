@@ -42,8 +42,11 @@ class AllMyPostsLobbyAdapter(private val allPosts: List<EditPagePostWithGoalID>,
         holder.createDate.text = formatTimeAgo(currentTimeMillis)
 
         holder.imageProfile.setImageBitmap(ImageUtils.convertBase64ToBitmap(post.userProfileImage))
-        holder.postImage.setImageBitmap(ImageUtils.convertBase64ToBitmap(post.post.image))
-
+        if(!post.post.image.isNullOrEmpty()) {
+            holder.postImage.setImageBitmap(ImageUtils.convertBase64ToBitmap(post.post.image))
+        } else {
+            holder.postImage.visibility = View.GONE
+        }
         holder.itemView.setOnClickListener {
             onItemClick(position)
         }

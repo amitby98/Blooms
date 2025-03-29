@@ -80,8 +80,10 @@ class AllMyPostsEditFragment : Fragment() {
     private fun populateScreen() {
         mTitleInput.setText(mPost.title)
         mMessageInput.setText(mPost.message)
-        mImagePost.setImageBitmap(ImageUtils.convertBase64ToBitmap(mPost.image))
-    }
+        if(!mPost.image.isNullOrEmpty()) {
+            mImagePost.setImageBitmap(ImageUtils.convertBase64ToBitmap(mPost.image))
+        }
+      }
 
     private fun initializeViews(view: View) {
         loadingDialog = LoadingDialog(requireContext())
@@ -135,8 +137,11 @@ class AllMyPostsEditFragment : Fragment() {
     private fun updateGoal() {
         val postTitle = mTitleInput.text?.toString()?.trim() ?: ""
         val newMessage = mMessageInput.text?.toString()?.trim() ?: ""
-        val bitmap = mImagePost.drawable.toBitmap()
-        val postImageString = ImageUtils.convertBitmapToBase64(bitmap)
+        var postImageString = ""
+        if(mImagePost.drawable != null) {
+            val bitmap = mImagePost.drawable.toBitmap()
+            postImageString = ImageUtils.convertBitmapToBase64(bitmap)
+        }
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         var newPost = Post(postId = mPost.postId, userId = userId ,title = postTitle, message = newMessage, image = postImageString, postDateAndTime = mPost.postDateAndTime)
         val index = mGoal.posts.indexOfFirst { it.postId == newPost.postId }
