@@ -6,8 +6,13 @@
     android:layout_height="100dp"
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
-    android:background="@drawable/gradient_background"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/transparent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangle_blue_gradient" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,7 +27,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/icons_blue" />
+            app:tint="@color/white"
+            android:forceDarkAllowed="false" />
 
         <TextView
             android:id="@+id/category_name"
@@ -33,7 +39,7 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
             android:maxLines="2"
-            android:textColor="@color/black"
+            android:textColor="@android:color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
