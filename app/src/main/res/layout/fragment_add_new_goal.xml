@@ -14,7 +14,7 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/goal_animation"
-            android:layout_width="100dp"
+            android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/welcome_animation" />
+            app:lottie_rawRes="@raw/new_goal"
+            android:scaleX="2"
+            android:scaleY="2" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/target_title_page"
@@ -163,50 +165,6 @@
                         android:textColorHint="#80FFFFFF"
                         tools:text="DD/MM/YYYY" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/share_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/rounded_share_background"
-                    android:padding="12dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tilDeadline">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/share_icon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_heart"
-                        android:tint="@color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/goal_share_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="Share your goal"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/share_icon"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/goal_share_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:orientation="horizontal"
-                        android:theme="@style/SwitchThemeOverlay"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

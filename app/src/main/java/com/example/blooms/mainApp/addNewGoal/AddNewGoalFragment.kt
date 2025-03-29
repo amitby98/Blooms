@@ -189,7 +189,6 @@ class AddNewGoalFragment : Fragment() {
         mAddImageBtn = view.findViewById(R.id.add_image_btn)
         mImagePost = view.findViewById(R.id.image_post)
         mAddGoalBtn = view.findViewById(R.id.add_goal_btn)
-        mShareToggle = view.findViewById(R.id.goal_share_toggle)
         loadingDialog = LoadingDialog(requireContext())
     }
 
