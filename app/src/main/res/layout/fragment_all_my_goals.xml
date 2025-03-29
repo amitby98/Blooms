@@ -34,29 +34,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
-
-            <!-- Notification -->
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/notification_icon"
-                    android:layout_width="24dp"
-                    android:layout_height="26dp"
-                    android:src="@drawable/ic_notification"/>
-
-                <TextView
-                    android:id="@+id/notification_badge"
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:background="@drawable/notification_badge_background"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="@android:color/white"
-                    android:textSize="10sp"
-                    android:layout_gravity="top|end"/>
-            </FrameLayout>
         </LinearLayout>
 
         <!-- Main Content -->
@@ -102,7 +79,7 @@
                 android:layout_marginRight="40dp"
                 android:gravity="center"
                 android:textSize="20dp"
-                android:text="Your journey starts here. Let's bloom!"
+                android:text="Your journey starts here.\n Let's bloom!"
                 android:layout_marginTop="20dp"/>
 
             <androidx.recyclerview.widget.RecyclerView

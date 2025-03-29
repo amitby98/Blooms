@@ -84,7 +84,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goal_progress_bar"
         android:text="00 : 00 : 00"
-        android:textSize="25sp"
+        android:textSize="28sp"
         android:textColor="@color/black"
         android:fontFamily="@font/digib" />
 
@@ -96,57 +96,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/like_button"
-            android:layout_width="24dp"
-            android:layout_height="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_heart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/like_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:text="7"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/like_button"
-            app:layout_constraintLeft_toRightOf="@id/like_button"
-            app:layout_constraintTop_toTopOf="@id/like_button" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/comment_button"
-            android:layout_width="24dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_comment"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/like_count"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/comment_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:text="5"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/comment_button"
-            app:layout_constraintLeft_toRightOf="@id/comment_button"
-            app:layout_constraintTop_toTopOf="@id/comment_button" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/delete_button"
