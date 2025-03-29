@@ -144,7 +144,7 @@
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxStrokeWidth="0dp"
-                    app:endIconDrawable="@drawable/ic_home"
+                    app:endIconDrawable="@drawable/ic_calendar"
                     app:endIconMode="custom"
                     app:endIconTint="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/tilTitle">
@@ -327,7 +327,7 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_button_outline"
-                    android:drawableStart="@drawable/ic_heart"
+                    android:drawableStart="@drawable/ic_image"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="center"
